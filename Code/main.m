@@ -1,9 +1,7 @@
 //
 //  main.m
-//  TurboFan
 //
-//  Created by Temp Kelan on 5/19/07.
-//  Copyright __MyCompanyName__ 2007. All rights reserved.
+//  Copyright 2009 Kelan Champagne. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
