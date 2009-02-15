@@ -1,0 +1,7 @@
+TODO
+
+Nice animation effects:
+* When animation starts, only light up the fins as they are "touched" for the first time.
+* When animation stops, don't light up any more fins, and just let the existing ones all fade down on their own.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
