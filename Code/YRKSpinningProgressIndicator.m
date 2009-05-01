@@ -6,6 +6,15 @@
 
 #import "YRKSpinningProgressIndicator.h"
 
+
+@interface YRKSpinningProgressIndicator (YRKSpinningProgressIndicatorPrivate)
+
+- (void) setupAnimTimer;
+- (void) disposeAnimTimer;
+
+@end
+
+
 @implementation YRKSpinningProgressIndicator
 
 - (id)initWithFrame:(NSRect)frame {
@@ -18,6 +27,19 @@
 		_nextFrameUpdate = [[NSDate date] retain];
     }
     return self;
+}
+
+- (void)viewDidMoveToWindow
+{
+	[super viewDidMoveToWindow];
+	
+	if ([self window] == nil) {
+		// No window?  View hierarchy may be going away.  Dispose timer to clear circular retain of timer to self to timer.
+		[self disposeAnimTimer];
+	}
+	else if (_isAnimating) {
+			[self setupAnimTimer];
+	}
 }
 
 - (void)drawRect:(NSRect)rect {
@@ -90,22 +112,40 @@
     [self setNeedsDisplay:YES];
 }
 
+- (void) setupAnimTimer {
+	// Just to be safe kill any existing timer.
+    [self disposeAnimTimer];
+	
+	if ([self window]) {
+		// Why animate if not visible?  viewDidMoveToWindow will re-call this method when needed.
+		_animationTimer = [[NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
+												   target:self
+												 selector:@selector(animate:)
+												 userInfo:nil
+												  repeats:YES] retain];
+											  
+		[[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSRunLoopCommonModes];
+		[[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
+		[[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSEventTrackingRunLoopMode];
+	}
+}
+
+- (void) disposeAnimTimer {
+    [_animationTimer invalidate];
+	[_animationTimer release];
+	_animationTimer = nil;
+}
+
 - (void)startAnimation:(id)sender {
 	_isAnimating = YES;
-    _animationTimer = [[NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
-                                               target:self
-                                             selector:@selector(animate:)
-                                             userInfo:nil
-                                              repeats:YES] retain];
-                                          
-    [_animationTimer setFireDate:[NSDate date]];
-    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
-    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSEventTrackingRunLoopMode];
+	
+	[self setupAnimTimer];
 }
 
 - (void)stopAnimation:(id)sender {
 	_isAnimating = NO;
-    [_animationTimer invalidate];
+	
+	[self disposeAnimTimer];
     
     [self setNeedsDisplay:YES];
 }
