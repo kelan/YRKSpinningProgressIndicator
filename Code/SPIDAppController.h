@@ -10,16 +10,16 @@
 
 
 @interface SPIDAppController : NSObject {
-	NSViewAnimation *viewAnimation;
-	
-	IBOutlet NSProgressIndicator *progressIndicator;
-	IBOutlet YRKSpinningProgressIndicator *turboFan;
-	IBOutlet NSButton *piButton;
-	IBOutlet NSButton *tfButton;
-	
-	IBOutlet NSColorWell *ftForegroundColor;
-	IBOutlet NSColorWell *ftBackgroundColor;
-	BOOL tfIsRunning, piIsRunning;
+    NSViewAnimation *viewAnimation;
+
+    IBOutlet NSProgressIndicator *progressIndicator;
+    IBOutlet YRKSpinningProgressIndicator *turboFan;
+    IBOutlet NSButton *piButton;
+    IBOutlet NSButton *tfButton;
+
+    IBOutlet NSColorWell *ftForegroundColor;
+    IBOutlet NSColorWell *ftBackgroundColor;
+    BOOL tfIsRunning, piIsRunning;
 
 }
 

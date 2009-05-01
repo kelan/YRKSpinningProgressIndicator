@@ -8,19 +8,19 @@
 
 
 @interface YRKSpinningProgressIndicator : NSView {
-	int _position;
-	NSDate *_nextFrameUpdate;
+    int _position;
+    NSDate *_nextFrameUpdate;
     int _numFins;
-	
-	BOOL _isAnimating;
+
+    BOOL _isAnimating;
     NSTimer *_animationTimer;
-	
-	NSColor *_foreColor;
-	NSColor *_backColor;
-	BOOL _drawBackground;
-	
-	NSTimer *_fadeOutAnimationTimer;
-	BOOL _isFadingOut;
+
+    NSColor *_foreColor;
+    NSColor *_backColor;
+    BOOL _drawBackground;
+
+    NSTimer *_fadeOutAnimationTimer;
+    BOOL _isFadingOut;
 }
 - (void)animate:(id)sender;
 - (void)stopAnimation:(id)sender;
