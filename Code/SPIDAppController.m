@@ -8,6 +8,12 @@
 
 @class YRKSpinningProgressIndicator;
 
+@interface SPIDAppController (PrivateMethods)
+
+- (void)runDeterminateDemoInBackgroundThread;
+
+@end
+
 
 @implementation SPIDAppController
 
@@ -29,6 +35,8 @@
     [self changeBackgroundColor:ftBackgroundColor];
 
     [turboFan setDrawBackground:NO];
+    
+    [self takeThreadedFrom:threadedAnimationButton];
 }
 
 - (IBAction)toggleProgressIndicator:(id)sender
@@ -55,28 +63,40 @@
     }
 }
 
-- (IBAction)doDetermineDemo:(id)sender
+- (IBAction)startDeterminateDemo:(id)sender
 {
+    [determinateDemoButton setEnabled:NO];
+    
     [turboFan setIndeterminate:NO];
     [turboFan setDoubleValue:0];
-    [NSThread detachNewThreadSelector:@selector(doDetermineDemoAsNewThread) toTarget:self withObject:nil];
+    
+    [NSThread detachNewThreadSelector:@selector(runDeterminateDemoInBackgroundThread) toTarget:self withObject:nil];
 }
 
-- (void)doDetermineDemoAsNewThread
+- (void)runDeterminateDemoInBackgroundThread
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    float i;
+    double i;
     for (i = 0; i <= 100; i += 0.5) {
         usleep(20000);
         [turboFan setDoubleValue:i];
     }
+    [pool release];
+    
+    [self performSelectorOnMainThread:@selector(finishDeterminateDemo)
+                           withObject:nil
+                        waitUntilDone:NO];
+}
+
+- (void)finishDeterminateDemo
+{
     [turboFan setIndeterminate:YES];
     if(tfIsRunning) {
         [turboFan startAnimation:self];
     }
     
-    [pool release];
+    [determinateDemoButton setEnabled:YES];
 }
 
 - (IBAction)changeForegroundColor:(id)sender
@@ -96,6 +116,13 @@
         [turboFan setDrawBackground:YES];
     else
         [turboFan setDrawBackground:NO];
+}
+
+- (IBAction)takeThreadedFrom:(id)sender
+{
+    BOOL useThreaded = (BOOL)[sender intValue];
+    [turboFan setUsesThreadedAnimation:useThreaded];
+    [progressIndicator setUsesThreadedAnimation:useThreaded];
 }
 
 @end

@@ -9,8 +9,10 @@
 
 @interface YRKSpinningProgressIndicator (YRKSpinningProgressIndicatorPrivate)
 
-- (void) setupAnimTimer;
-- (void) disposeAnimTimer;
+- (void)updateFrame:(NSTimer *)timer;
+- (void)animateInBackgroundThread;
+- (void)actuallyStartAnimation;
+- (void)actuallyStopAnimation;
 
 @end
 
@@ -24,8 +26,6 @@
         _position = 0;
         _numFins = 12;
         _isAnimating = NO;
-        _foreColor = nil;
-        _backColor = nil;
         _isFadingOut = NO;
         _isIndeterminate = YES;
         _currentValue = 0.0;
@@ -48,10 +48,10 @@
 
     if ([self window] == nil) {
         // No window?  View hierarchy may be going away.  Dispose timer to clear circular retain of timer to self to timer.
-        [self disposeAnimTimer];
+        [self actuallyStopAnimation];
     }
     else if (_isAnimating) {
-            [self setupAnimTimer];
+        [self actuallyStartAnimation];
     }
 }
 
@@ -132,58 +132,108 @@
 # pragma mark -
 # pragma mark Subclass
 
-- (void)animate:(id)sender
+- (void)updateFrame:(NSTimer *)timer;
 {
-
     if(_position > 0) {
         _position--;
     }
     else {
         _position = _numFins - 1;
     }
-
-    [self setNeedsDisplay:YES];
-}
-
-- (void) setupAnimTimer
-{
-    // Just to be safe kill any existing timer.
-    [self disposeAnimTimer];
-
-    if ([self window]) {
-        // Why animate if not visible?  viewDidMoveToWindow will re-call this method when needed.
-        _animationTimer = [[NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
-                                                   target:self
-                                                 selector:@selector(animate:)
-                                                 userInfo:nil
-                                                  repeats:YES] retain];
-
-        [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSRunLoopCommonModes];
-        [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
-        [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSEventTrackingRunLoopMode];
+    
+    if (_usesThreadedAnimation) {
+        // draw now instead of waiting for setNeedsDisplay (that's the whole reason
+        // we're animating from background thread)
+        [self display];
+    }
+    else {
+        [self setNeedsDisplay:YES];
     }
 }
 
-- (void) disposeAnimTimer
+- (void)animateInBackgroundThread
 {
-    [_animationTimer invalidate];
-    [_animationTimer release];
-    _animationTimer = nil;
+	NSAutoreleasePool *animationPool = [[NSAutoreleasePool alloc] init];
+	
+	// Set up the animation speed to subtly change with size > 32.
+	// int animationDelay = 38000 + (2000 * ([self bounds].size.height / 32));
+    
+    // Set the rev per minute here
+    int omega = 100; // RPM
+    int animationDelay = 60*1000000/omega/_numFins;
+	int poolFlushCounter = 0;
+    
+	do {
+		[self updateFrame:nil];
+		usleep(animationDelay);
+		poolFlushCounter++;
+		if (poolFlushCounter > 256) {
+			[animationPool drain];
+			animationPool = [[NSAutoreleasePool alloc] init];
+			poolFlushCounter = 0;
+		}
+	} while (![[NSThread currentThread] isCancelled]); 
+    
+	[animationPool release];
 }
 
 - (void)startAnimation:(id)sender
 {
+    if (!_isIndeterminate) return;
+    if (_isAnimating) return;
+    
+    [self actuallyStartAnimation];
     _isAnimating = YES;
-
-    [self setupAnimTimer];
 }
 
 - (void)stopAnimation:(id)sender
 {
+    [self actuallyStopAnimation];
     _isAnimating = NO;
+}
 
-    [self disposeAnimTimer];
+- (void)actuallyStartAnimation
+{
+    // Just to be safe kill any existing timer.
+    [self actuallyStopAnimation];
 
+    if ([self window]) {
+        // Why animate if not visible?  viewDidMoveToWindow will re-call this method when needed.
+        if (_usesThreadedAnimation) {
+            _animationThread = [[NSThread alloc] initWithTarget:self selector:@selector(animateInBackgroundThread) object:nil];
+            [_animationThread start];
+        }
+        else {
+            _animationTimer = [[NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
+                                                       target:self
+                                                     selector:@selector(updateFrame:)
+                                                     userInfo:nil
+                                                      repeats:YES] retain];
+            
+            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSRunLoopCommonModes];
+            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
+            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSEventTrackingRunLoopMode];
+        }
+    }
+}
+
+- (void)actuallyStopAnimation
+{
+    if (_animationThread) {
+        // we were using threaded animation
+		[_animationThread cancel];
+		if (![_animationThread isFinished]) {
+			[[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+		}
+		[_animationThread release];
+        _animationThread = nil;
+	}
+    else if (_animationTimer) {
+        // we were using timer-based animation
+        [_animationTimer invalidate];
+        [_animationTimer release];
+        _animationTimer = nil;
+    }
     [self setNeedsDisplay:YES];
 }
 
@@ -260,7 +310,10 @@
 
 - (void)setDoubleValue:(double)doubleValue
 {
-    if (_isIndeterminate) _isIndeterminate = NO;
+    // Automatically put it into determinate mode if it's not already.
+    if (_isIndeterminate) {
+        [self setIndeterminate:NO];
+    }
     _currentValue = doubleValue;
     [self setNeedsDisplay:YES];
 }
@@ -274,6 +327,24 @@
 {
     _maxValue = maxValue;
     [self setNeedsDisplay:YES];
+}
+
+- (void)setUsesThreadedAnimation:(BOOL)useThreaded
+{
+    if (_usesThreadedAnimation != useThreaded) {
+        _usesThreadedAnimation = useThreaded;
+        
+        if (_isAnimating) {
+            // restart the timer to use the new mode
+            [self stopAnimation:self];
+            [self startAnimation:self];
+        }
+    }
+}
+
+- (BOOL)usesThreadedAnimation
+{
+    return _usesThreadedAnimation;
 }
 
 @end

@@ -16,20 +16,25 @@
     IBOutlet YRKSpinningProgressIndicator *turboFan;
     IBOutlet NSButton *piButton;
     IBOutlet NSButton *tfButton;
+    IBOutlet NSButton *threadedAnimationButton;
 
     IBOutlet NSColorWell *ftForegroundColor;
     IBOutlet NSColorWell *ftBackgroundColor;
     BOOL tfIsRunning, piIsRunning;
-
+    
+    IBOutlet NSButton *determinateDemoButton;
 }
 
 - (IBAction)toggleProgressIndicator:(id)sender;
 - (IBAction)toggleTurboFan:(id)sender;
 
-- (IBAction)doDetermineDemo:(id)sender;
+- (IBAction)startDeterminateDemo:(id)sender;
+- (void)finishDeterminateDemo;
 
 - (IBAction)changeForegroundColor:(id)sender;
 - (IBAction)changeBackgroundColor:(id)sender;
 - (IBAction)toggleDrawBackground:(id)sender;
+
+- (IBAction)takeThreadedFrom:(id)sender;
 
 @end

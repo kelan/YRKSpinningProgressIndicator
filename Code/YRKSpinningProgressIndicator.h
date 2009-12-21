@@ -13,6 +13,7 @@
     
     BOOL _isAnimating;
     NSTimer *_animationTimer;
+	NSThread *_animationThread;
     
     NSColor *_foreColor;
     NSColor *_backColor;
@@ -25,8 +26,10 @@
     BOOL _isIndeterminate;
     double _currentValue;
     double _maxValue;
+    
+    BOOL _usesThreadedAnimation;
 }
-- (void)animate:(id)sender;
+
 - (void)stopAnimation:(id)sender;
 - (void)startAnimation:(id)sender;
 
@@ -46,5 +49,8 @@
 - (void)setDoubleValue:(double)doubleValue;
 - (double)maxValue;
 - (void)setMaxValue:(double)maxValue;
+
+- (void)setUsesThreadedAnimation:(BOOL)useThreaded;
+- (BOOL)usesThreadedAnimation;
 
 @end
