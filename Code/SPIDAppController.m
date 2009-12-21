@@ -55,6 +55,30 @@
     }
 }
 
+- (IBAction)doDetermineDemo:(id)sender
+{
+    [turboFan setIndeterminate:NO];
+    [turboFan setDoubleValue:0];
+    [NSThread detachNewThreadSelector:@selector(doDetermineDemoAsNewThread) toTarget:self withObject:nil];
+}
+
+- (void)doDetermineDemoAsNewThread
+{
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    float i;
+    for (i = 0; i <= 100; i += 0.5) {
+        usleep(20000);
+        [turboFan setDoubleValue:i];
+    }
+    [turboFan setIndeterminate:YES];
+    if(tfIsRunning) {
+        [turboFan startAnimation:self];
+    }
+    
+    [pool release];
+}
+
 - (IBAction)changeForegroundColor:(id)sender
 {
     [turboFan setForeColor:[sender color]];

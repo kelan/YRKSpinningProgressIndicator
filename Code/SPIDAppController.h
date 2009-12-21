@@ -26,6 +26,8 @@
 - (IBAction)toggleProgressIndicator:(id)sender;
 - (IBAction)toggleTurboFan:(id)sender;
 
+- (IBAction)doDetermineDemo:(id)sender;
+
 - (IBAction)changeForegroundColor:(id)sender;
 - (IBAction)changeBackgroundColor:(id)sender;
 - (IBAction)toggleDrawBackground:(id)sender;

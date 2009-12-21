@@ -24,7 +24,12 @@
         _position = 0;
         _numFins = 12;
         _isAnimating = NO;
+        _foreColor = nil;
+        _backColor = nil;
         _isFadingOut = NO;
+        _isIndeterminate = YES;
+        _currentValue = 0.0;
+        _maxValue = 100.0;
     }
     return self;
 }
@@ -67,33 +72,51 @@
     // Move the CTM so 0,0 is at the center of our bounds
     CGContextTranslateCTM(currentContext,[self bounds].size.width/2,[self bounds].size.height/2);
 
-    // do initial rotation to start place
-    CGContextRotateCTM(currentContext, 3.14159*2/_numFins * _position);
+    if (_isIndeterminate) {
+        // do initial rotation to start place
+        CGContextRotateCTM(currentContext, 3.14159*2/_numFins * _position);
 
-    NSBezierPath *path = [[NSBezierPath alloc] init];
-    float lineWidth = 0.0859375 * maxSize; // should be 2.75 for 32x32
-    float lineStart = 0.234375 * maxSize; // should be 7.5 for 32x32
-    float lineEnd = 0.421875 * maxSize;  // should be 13.5 for 32x32
-    [path setLineWidth:lineWidth];
-    [path setLineCapStyle:NSRoundLineCapStyle];
-    [path moveToPoint:NSMakePoint(0,lineStart)];
-    [path lineToPoint:NSMakePoint(0,lineEnd)];
+        NSBezierPath *path = [[NSBezierPath alloc] init];
+        float lineWidth = 0.0859375 * maxSize; // should be 2.75 for 32x32
+        float lineStart = 0.234375 * maxSize; // should be 7.5 for 32x32
+        float lineEnd = 0.421875 * maxSize;  // should be 13.5 for 32x32
+        [path setLineWidth:lineWidth];
+        [path setLineCapStyle:NSRoundLineCapStyle];
+        [path moveToPoint:NSMakePoint(0,lineStart)];
+        [path lineToPoint:NSMakePoint(0,lineEnd)];
 
-    for(i=0; i<_numFins; i++) {
-        if(_isAnimating) {
-            [[_foreColor colorWithAlphaComponent:alpha] set];
+        for(i=0; i<_numFins; i++) {
+            if(_isAnimating) {
+                [[_foreColor colorWithAlphaComponent:alpha] set];
+            }
+            else {
+                [[_foreColor colorWithAlphaComponent:0.2] set];
+            }
+
+            [path stroke];
+
+            // we draw all the fins by rotating the CTM, then just redraw the same segment again
+            CGContextRotateCTM(currentContext, 6.282185/_numFins);
+            alpha -= 1.0/_numFins;
         }
-        else {
-            [[_foreColor colorWithAlphaComponent:0.2] set];
-        }
-
-        [path stroke];
-
-        // we draw all the fins by rotating the CTM, then just redraw the same segment again
-        CGContextRotateCTM(currentContext, 6.282185/_numFins);
-        alpha -= 1.0/_numFins;
+        [path release];
     }
-    [path release];
+    else {
+        float lineWidth = 1 + (0.01 * maxSize);
+        float circleRadius = (maxSize - lineWidth) / 2.1;
+        NSPoint circleCenter = NSMakePoint(0, 0);
+        [[_foreColor colorWithAlphaComponent:alpha] set];
+        NSBezierPath *path = [[NSBezierPath alloc] init];
+        [path setLineWidth:lineWidth];
+        [path appendBezierPathWithOvalInRect:NSMakeRect(-circleRadius, -circleRadius, circleRadius*2, circleRadius*2)];
+        [path stroke];
+        [path release];
+        path = [[NSBezierPath alloc] init];
+        [path appendBezierPathWithArcWithCenter:circleCenter radius:circleRadius startAngle:90 endAngle:90-(360*(_currentValue/_maxValue)) clockwise:YES];
+        [path lineToPoint:circleCenter] ;
+        [path fill];
+        [path release];
+    }
 
     [NSGraphicsContext restoreGraphicsState];
 }
@@ -207,6 +230,41 @@
     if (_drawBackground != value) {
         _drawBackground = value;
     }
+    [self setNeedsDisplay:YES];
+}
+
+- (BOOL)isIndeterminate
+{
+    return _isIndeterminate;
+}
+
+- (void)setIndeterminate:(BOOL)isIndeterminate
+{
+    _isIndeterminate = isIndeterminate;
+    if (!_isIndeterminate && _isAnimating) [self stopAnimation:self];
+    [self setNeedsDisplay:YES];
+}
+
+- (double)doubleValue
+{
+    return _currentValue;
+}
+
+- (void)setDoubleValue:(double)doubleValue
+{
+    if (_isIndeterminate) _isIndeterminate = NO;
+    _currentValue = doubleValue;
+    [self setNeedsDisplay:YES];
+}
+
+- (double)maxValue
+{
+    return _maxValue;
+}
+
+- (void)setMaxValue:(double)maxValue
+{
+    _maxValue = maxValue;
     [self setNeedsDisplay:YES];
 }
 
