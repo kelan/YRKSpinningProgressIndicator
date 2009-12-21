@@ -34,6 +34,14 @@
     return self;
 }
 
+- (void) dealloc {
+    if (_foreColor) [_foreColor release];
+    if (_backColor) [_backColor release];
+    if (_isAnimating) [self stopAnimation:self];
+    
+    [super dealloc];
+}
+
 - (void)viewDidMoveToWindow
 {
     [super viewDidMoveToWindow];
@@ -131,7 +139,7 @@
         _position--;
     }
     else {
-        _position = _numFins;
+        _position = _numFins - 1;
     }
 
     [self setNeedsDisplay:YES];
