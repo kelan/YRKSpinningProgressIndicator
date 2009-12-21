@@ -29,9 +29,6 @@
     [self changeBackgroundColor:ftBackgroundColor];
 
     [turboFan setDrawBackground:NO];
-
-    //TEST: bezeled
-    [progressIndicator setBezeled:YES];
 }
 
 - (IBAction)toggleProgressIndicator:(id)sender

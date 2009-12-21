@@ -9,7 +9,6 @@
 
 @interface YRKSpinningProgressIndicator : NSView {
     int _position;
-    NSDate *_nextFrameUpdate;
     int _numFins;
 
     BOOL _isAnimating;

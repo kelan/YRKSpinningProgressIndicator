@@ -47,10 +47,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				76345A5B0F47DD8000C1B478 /* YRKSpinningProgressIndicator.m */,
-				76345A5C0F47DD8000C1B478 /* YRKSpinningProgressIndicator.h */,
-				76345A5D0F47DD8000C1B478 /* SPIDAppController.m */,
 				76345A5E0F47DD8000C1B478 /* SPIDAppController.h */,
+				76345A5D0F47DD8000C1B478 /* SPIDAppController.m */,
+				76345A5C0F47DD8000C1B478 /* YRKSpinningProgressIndicator.h */,
+				76345A5B0F47DD8000C1B478 /* YRKSpinningProgressIndicator.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

@@ -25,7 +25,6 @@
         _numFins = 12;
         _isAnimating = NO;
         _isFadingOut = NO;
-        _nextFrameUpdate = [[NSDate date] retain];
     }
     return self;
 }
