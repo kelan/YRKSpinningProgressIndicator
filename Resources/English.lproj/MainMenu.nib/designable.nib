@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -51,7 +50,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{377, 138}</string>
 				<object class="NSView" key="NSWindowView" id="405375199">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -295,7 +294,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{377, 161}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{377, 160}</string>
@@ -1130,38 +1128,6 @@
 					<int key="connectionID">205</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">turboFan</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="344089773"/>
-					</object>
-					<int key="connectionID">217</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">progressIndicator</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="445711097"/>
-					</object>
-					<int key="connectionID">218</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">tfButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="651528481"/>
-					</object>
-					<int key="connectionID">219</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">piButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="601836782"/>
-					</object>
-					<int key="connectionID">220</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">toggleTurboFan:</string>
 						<reference key="source" ref="846612265"/>
@@ -1176,22 +1142,6 @@
 						<reference key="destination" ref="601836782"/>
 					</object>
 					<int key="connectionID">222</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">ftBackgroundColor</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="368665886"/>
-					</object>
-					<int key="connectionID">229</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">ftForegroundColor</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="1051472683"/>
-					</object>
-					<int key="connectionID">230</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1234,36 +1184,76 @@
 					<int key="connectionID">258</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">threadedDemoButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="520069301"/>
-					</object>
-					<int key="connectionID">260</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">determinateDemoButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="520069301"/>
-					</object>
-					<int key="connectionID">261</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">threadedAnimationButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="989837400"/>
-					</object>
-					<int key="connectionID">262</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">startDeterminateDemo:</string>
 						<reference key="source" ref="846612265"/>
 						<reference key="destination" ref="520069301"/>
 					</object>
 					<int key="connectionID">263</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_progressIndicator</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="445711097"/>
+					</object>
+					<int key="connectionID">264</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_turboFan</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="344089773"/>
+					</object>
+					<int key="connectionID">265</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_nspiToggleButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="601836782"/>
+					</object>
+					<int key="connectionID">269</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_yrkpiToggleButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="651528481"/>
+					</object>
+					<int key="connectionID">270</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_threadedAnimationButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="989837400"/>
+					</object>
+					<int key="connectionID">271</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_foregroundColorWell</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="1051472683"/>
+					</object>
+					<int key="connectionID">272</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_backgroundColorWell</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="368665886"/>
+					</object>
+					<int key="connectionID">273</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_determinateDemoButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="520069301"/>
+					</object>
+					<int key="connectionID">274</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2226,7 +2216,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">263</int>
+			<int key="maxID">274</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2269,25 +2259,25 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>determinateDemoButton</string>
-							<string>ftBackgroundColor</string>
-							<string>ftForegroundColor</string>
-							<string>piButton</string>
-							<string>progressIndicator</string>
-							<string>tfButton</string>
-							<string>threadedAnimationButton</string>
-							<string>turboFan</string>
+							<string>_backgroundColorWell</string>
+							<string>_determinateDemoButton</string>
+							<string>_foregroundColorWell</string>
+							<string>_nspiToggleButton</string>
+							<string>_progressIndicator</string>
+							<string>_threadedAnimationButton</string>
+							<string>_turboFan</string>
+							<string>_yrkpiToggleButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSButton</string>
 							<string>NSColorWell</string>
+							<string>NSButton</string>
 							<string>NSColorWell</string>
 							<string>NSButton</string>
 							<string>NSProgressIndicator</string>
 							<string>NSButton</string>
-							<string>NSButton</string>
 							<string>YRKSpinningProgressIndicator</string>
+							<string>NSButton</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

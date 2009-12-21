@@ -12,17 +12,17 @@
 @interface SPIDAppController : NSObject {
     NSViewAnimation *viewAnimation;
 
-    IBOutlet NSProgressIndicator *progressIndicator;
-    IBOutlet YRKSpinningProgressIndicator *turboFan;
-    IBOutlet NSButton *piButton;
-    IBOutlet NSButton *tfButton;
-    IBOutlet NSButton *threadedAnimationButton;
+    IBOutlet NSProgressIndicator *_progressIndicator;
+    IBOutlet YRKSpinningProgressIndicator *_turboFan;
+    IBOutlet NSButton *_nspiToggleButton;
+    IBOutlet NSButton *_yrkpiToggleButton;
+    IBOutlet NSButton *_threadedAnimationButton;
 
-    IBOutlet NSColorWell *ftForegroundColor;
-    IBOutlet NSColorWell *ftBackgroundColor;
-    BOOL tfIsRunning, piIsRunning;
+    IBOutlet NSColorWell *_foregroundColorWell;
+    IBOutlet NSColorWell *_backgroundColorWell;
+    BOOL _yrkpiIsRunning, _nspiIsRunning;
     
-    IBOutlet NSButton *determinateDemoButton;
+    IBOutlet NSButton *_determinateDemoButton;
 }
 
 - (IBAction)toggleProgressIndicator:(id)sender;

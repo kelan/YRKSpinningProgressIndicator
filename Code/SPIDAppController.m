@@ -21,54 +21,54 @@
 {
     self = [super init];
     if (self != nil) {
-        piIsRunning = NO;
-        tfIsRunning = NO;
+        _nspiIsRunning = NO;
+        _yrkpiIsRunning = NO;
     }
     return self;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    [ftForegroundColor setColor:[NSColor grayColor]];
-    [ftBackgroundColor setColor:[NSColor whiteColor]];
-    [self changeForegroundColor:ftForegroundColor];
-    [self changeBackgroundColor:ftBackgroundColor];
+    [_foregroundColorWell setColor:[NSColor grayColor]];
+    [_backgroundColorWell setColor:[NSColor whiteColor]];
+    [self changeForegroundColor:_foregroundColorWell];
+    [self changeBackgroundColor:_backgroundColorWell];
 
-    [turboFan setDrawBackground:NO];
+    [_turboFan setDrawBackground:NO];
     
-    [self takeThreadedFrom:threadedAnimationButton];
+    [self takeThreadedFrom:_threadedAnimationButton];
 }
 
 - (IBAction)toggleProgressIndicator:(id)sender
 {
-    if(piIsRunning) {
-        [progressIndicator stopAnimation:self];
-        piIsRunning = NO;
+    if(_nspiIsRunning) {
+        [_progressIndicator stopAnimation:self];
+        _nspiIsRunning = NO;
     }
     else {
-        [progressIndicator startAnimation:self];
-        piIsRunning = YES;
+        [_progressIndicator startAnimation:self];
+        _nspiIsRunning = YES;
     }
 }
 
 - (IBAction)toggleTurboFan:(id)sender
 {
-    if(tfIsRunning) {
-        [turboFan stopAnimation:self];
-        tfIsRunning = NO;
+    if(_yrkpiIsRunning) {
+        [_turboFan stopAnimation:self];
+        _yrkpiIsRunning = NO;
     }
     else {
-        [turboFan startAnimation:self];
-        tfIsRunning = YES;
+        [_turboFan startAnimation:self];
+        _yrkpiIsRunning = YES;
     }
 }
 
 - (IBAction)startDeterminateDemo:(id)sender
 {
-    [determinateDemoButton setEnabled:NO];
+    [_determinateDemoButton setEnabled:NO];
     
-    [turboFan setIndeterminate:NO];
-    [turboFan setDoubleValue:0];
+    [_turboFan setIndeterminate:NO];
+    [_turboFan setDoubleValue:0];
     
     [NSThread detachNewThreadSelector:@selector(runDeterminateDemoInBackgroundThread) toTarget:self withObject:nil];
 }
@@ -80,7 +80,7 @@
     double i;
     for (i = 0; i <= 100; i += 0.5) {
         usleep(20000);
-        [turboFan setDoubleValue:i];
+        [_turboFan setDoubleValue:i];
     }
     [pool release];
     
@@ -91,38 +91,38 @@
 
 - (void)finishDeterminateDemo
 {
-    [turboFan setIndeterminate:YES];
-    if(tfIsRunning) {
-        [turboFan startAnimation:self];
+    [_turboFan setIndeterminate:YES];
+    if(_yrkpiIsRunning) {
+        [_turboFan startAnimation:self];
     }
     
-    [determinateDemoButton setEnabled:YES];
+    [_determinateDemoButton setEnabled:YES];
 }
 
 - (IBAction)changeForegroundColor:(id)sender
 {
-    [turboFan setForeColor:[sender color]];
+    [_turboFan setForeColor:[sender color]];
 }
 
 
 - (IBAction)changeBackgroundColor:(id)sender
 {
-    [turboFan setBackColor:[sender color]];
+    [_turboFan setBackColor:[sender color]];
 }
 
 - (IBAction)toggleDrawBackground:(id)sender
 {
     if([sender state] == NSOnState)
-        [turboFan setDrawBackground:YES];
+        [_turboFan setDrawBackground:YES];
     else
-        [turboFan setDrawBackground:NO];
+        [_turboFan setDrawBackground:NO];
 }
 
 - (IBAction)takeThreadedFrom:(id)sender
 {
     BOOL useThreaded = (BOOL)[sender intValue];
-    [turboFan setUsesThreadedAnimation:useThreaded];
-    [progressIndicator setUsesThreadedAnimation:useThreaded];
+    [_turboFan setUsesThreadedAnimation:useThreaded];
+    [_progressIndicator setUsesThreadedAnimation:useThreaded];
 }
 
 @end
