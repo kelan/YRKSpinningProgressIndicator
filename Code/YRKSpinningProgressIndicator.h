@@ -40,8 +40,8 @@
 - (void)setForeColor:(NSColor *)value;
 - (NSColor *)backColor;
 - (void)setBackColor:(NSColor *)value;
-- (BOOL)drawBackground;
-- (void)setDrawBackground:(BOOL)value;
+- (BOOL)drawsBackground;
+- (void)setDrawsBackground:(BOOL)value;
 
 - (BOOL)isIndeterminate;
 - (void)setIndeterminate:(BOOL)isIndeterminate;

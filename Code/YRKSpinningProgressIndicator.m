@@ -278,12 +278,12 @@
     }
 }
 
-- (BOOL)drawBackground
+- (BOOL)drawsBackground
 {
     return _drawBackground;
 }
 
-- (void)setDrawBackground:(BOOL)value
+- (void)setDrawsBackground:(BOOL)value
 {
     if (_drawBackground != value) {
         _drawBackground = value;
