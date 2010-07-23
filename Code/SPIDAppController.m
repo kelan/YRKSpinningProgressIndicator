@@ -34,7 +34,7 @@
     [self changeForegroundColor:_foregroundColorWell];
     [self changeBackgroundColor:_backgroundColorWell];
 
-    [_turboFan setDrawBackground:NO];
+    [_turboFan setDrawsBackground:NO];
     
     [self takeThreadedFrom:_threadedAnimationButton];
 }
@@ -101,21 +101,21 @@
 
 - (IBAction)changeForegroundColor:(id)sender
 {
-    [_turboFan setForeColor:[sender color]];
+    [_turboFan setColor:[sender color]];
 }
 
 
 - (IBAction)changeBackgroundColor:(id)sender
 {
-    [_turboFan setBackColor:[sender color]];
+    [_turboFan setBackgroundColor:[sender color]];
 }
 
 - (IBAction)toggleDrawBackground:(id)sender
 {
     if([sender state] == NSOnState)
-        [_turboFan setDrawBackground:YES];
+        [_turboFan setDrawsBackground:YES];
     else
-        [_turboFan setDrawBackground:NO];
+        [_turboFan setDrawsBackground:NO];
 }
 
 - (IBAction)takeThreadedFrom:(id)sender
