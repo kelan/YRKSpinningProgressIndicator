@@ -35,8 +35,8 @@
 }
 
 - (void) dealloc {
-    if (_foreColor) [_foreColor release];
-    if (_backColor) [_backColor release];
+    [_foreColor release];
+    [_backColor release];
     if (_isAnimating) [self stopAnimation:self];
     
     [super dealloc];
