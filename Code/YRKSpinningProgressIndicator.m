@@ -264,12 +264,12 @@
     }
 }
 
-- (NSColor *)backColor
+- (NSColor *)backgroundColor
 {
     return [[_backColor retain] autorelease];
 }
 
-- (void)setBackColor:(NSColor *)value
+- (void)setBackgroundColor:(NSColor *)value
 {
     if (_backColor != value) {
         [_backColor release];

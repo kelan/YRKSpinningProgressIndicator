@@ -38,8 +38,8 @@
 
 - (NSColor *)foreColor;
 - (void)setForeColor:(NSColor *)value;
-- (NSColor *)backColor;
-- (void)setBackColor:(NSColor *)value;
+- (NSColor *)backgroundColor;
+- (void)setBackgroundColor:(NSColor *)value;
 - (BOOL)drawsBackground;
 - (void)setDrawsBackground:(BOOL)value;
 
