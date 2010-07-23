@@ -30,6 +30,7 @@
         _isIndeterminate = YES;
         _currentValue = 0.0;
         _maxValue = 100.0;
+        _foreColor = [[NSColor blackColor] copy];
     }
     return self;
 }
