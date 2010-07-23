@@ -36,8 +36,8 @@
 
 // Accessors
 
-- (NSColor *)foreColor;
-- (void)setForeColor:(NSColor *)value;
+- (NSColor *)color;
+- (void)setColor:(NSColor *)value;
 - (NSColor *)backgroundColor;
 - (void)setBackgroundColor:(NSColor *)value;
 - (BOOL)drawsBackground;

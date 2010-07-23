@@ -250,12 +250,12 @@
 # pragma mark -
 # pragma mark Accessors
 
-- (NSColor *)foreColor
+- (NSColor *)color
 {
     return [[_foreColor retain] autorelease];
 }
 
-- (void)setForeColor:(NSColor *)value
+- (void)setColor:(NSColor *)value
 {
     if (_foreColor != value) {
         [_foreColor release];
