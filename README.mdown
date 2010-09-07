@@ -10,8 +10,11 @@ Please feel free to send me questions or comments.
 * v1.0  2008-07-08  Initial Release.
 * v1.1  2009-02-14  Fixes from Eric Roccasecca.
 * v1.2  2009-12-21  Added determinate mode and threaded animation, mostly via
-email from Rowan Beentje (from SequelPro).
-
+                    email from Rowan Beentje (from SequelPro).
+* v1.3  2010-09-06  Pulled fixes, name improvements from mikeabdulla and
+                    uncomplex.
+                    NOTE: This version is not backwards-compatible with
+                    previous versions due to the name changes.
 
 ## Overview
 
