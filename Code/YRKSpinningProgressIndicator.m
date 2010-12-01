@@ -31,6 +31,7 @@
         _currentValue = 0.0;
         _maxValue = 100.0;
         _foreColor = [[NSColor blackColor] copy];
+		_displayWhenStopped = YES;
     }
     return self;
 }
@@ -183,6 +184,9 @@
     if (!_isIndeterminate) return;
     if (_isAnimating) return;
     
+	if (!_displayWhenStopped)
+		[self setHidden:NO];
+	
     [self actuallyStartAnimation];
     _isAnimating = YES;
 }
@@ -191,6 +195,9 @@
 {
     [self actuallyStopAnimation];
     _isAnimating = NO;
+	
+	if (!_displayWhenStopped)
+		[self setHidden:YES];
 }
 
 - (void)actuallyStartAnimation
@@ -346,6 +353,13 @@
 - (BOOL)usesThreadedAnimation
 {
     return _usesThreadedAnimation;
+}
+
+- (void)setDisplayedWhenStopped:(BOOL)diplayWhenStopped {
+	_displayWhenStopped = diplayWhenStopped;
+}
+- (BOOL)displayWhenStopped {
+	return _displayWhenStopped;
 }
 
 @end

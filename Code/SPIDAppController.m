@@ -118,6 +118,21 @@
         [_turboFan setDrawsBackground:NO];
 }
 
+- (IBAction)toggleDisplayWhenStopped:(id)sender {
+	if([sender state] == NSOnState) {
+		if ([_turboFan isHidden])
+			[_turboFan setHidden:NO];
+			
+			[_turboFan setDisplayedWhenStopped:YES];		
+	} else {
+		if (![_turboFan isHidden])
+			[_turboFan setHidden:YES];
+		
+		[_turboFan setDisplayedWhenStopped:NO];		
+	}
+
+}
+
 - (IBAction)takeThreadedFrom:(id)sender
 {
     BOOL useThreaded = (BOOL)[sender intValue];
