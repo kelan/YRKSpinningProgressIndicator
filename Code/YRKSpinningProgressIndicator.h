@@ -21,6 +21,8 @@
     
     NSTimer *_fadeOutAnimationTimer;
     BOOL _isFadingOut;
+	
+	BOOL _displayWhenStopped;
     
     // For determinate mode
     BOOL _isIndeterminate;
@@ -52,5 +54,8 @@
 
 - (void)setUsesThreadedAnimation:(BOOL)useThreaded;
 - (BOOL)usesThreadedAnimation;
+
+- (void)setDisplayedWhenStopped:(BOOL)displayWhenStopped;
+- (BOOL)displayWhenStopped;
 
 @end

@@ -118,6 +118,11 @@
         [_turboFan setDrawsBackground:NO];
 }
 
+- (IBAction)toggleDisplayWhenStopped:(id)sender
+{
+	[_turboFan setDisplayedWhenStopped:([sender state] == NSOnState)];
+}
+
 - (IBAction)takeThreadedFrom:(id)sender
 {
     BOOL useThreaded = (BOOL)[sender intValue];

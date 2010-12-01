@@ -17,6 +17,7 @@
     IBOutlet NSButton *_nspiToggleButton;
     IBOutlet NSButton *_yrkpiToggleButton;
     IBOutlet NSButton *_threadedAnimationButton;
+    IBOutlet NSButton *_displayWhenStoppedButton;
 
     IBOutlet NSColorWell *_foregroundColorWell;
     IBOutlet NSColorWell *_backgroundColorWell;
@@ -34,6 +35,8 @@
 - (IBAction)changeForegroundColor:(id)sender;
 - (IBAction)changeBackgroundColor:(id)sender;
 - (IBAction)toggleDrawBackground:(id)sender;
+
+- (IBAction)toggleDisplayWhenStopped:(id)sender;
 
 - (IBAction)takeThreadedFrom:(id)sender;
 
