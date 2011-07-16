@@ -6,7 +6,7 @@
 
 #import "SPIDAppController.h"
 
-@class YRKSpinningProgressIndicator;
+#import "YRKSpinningProgressIndicator.h"
 
 @interface SPIDAppController (PrivateMethods)
 
@@ -29,7 +29,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    [_foregroundColorWell setColor:[NSColor grayColor]];
+    [_foregroundColorWell setColor:[NSColor colorWithDeviceRed:0.2 green:0.2 blue:0.2 alpha:1.0]];
     [_backgroundColorWell setColor:[NSColor whiteColor]];
     [self changeForegroundColor:_foregroundColorWell];
     [self changeBackgroundColor:_backgroundColorWell];
@@ -43,10 +43,12 @@
 {
     if(_nspiIsRunning) {
         [_progressIndicator stopAnimation:self];
+        [_nspiToggleButton setTitle:@"Start"];
         _nspiIsRunning = NO;
     }
     else {
         [_progressIndicator startAnimation:self];
+        [_nspiToggleButton setTitle:@"Stop"];
         _nspiIsRunning = YES;
     }
 }
@@ -55,10 +57,12 @@
 {
     if(_yrkpiIsRunning) {
         [_turboFan stopAnimation:self];
+        [_yrkpiToggleButton setTitle:@"Start"];
         _yrkpiIsRunning = NO;
     }
     else {
         [_turboFan startAnimation:self];
+        [_yrkpiToggleButton setTitle:@"Stop"];
         _yrkpiIsRunning = YES;
     }
 }
