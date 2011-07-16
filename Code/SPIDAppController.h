@@ -4,9 +4,8 @@
 //  Copyright 2009 Kelan Champagne. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 
-#import "YRKSpinningProgressIndicator.h"
+@class YRKSpinningProgressIndicator;
 
 
 @interface SPIDAppController : NSObject {

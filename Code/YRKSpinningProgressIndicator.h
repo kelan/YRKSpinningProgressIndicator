@@ -4,8 +4,6 @@
 //  Copyright 2009 Kelan Champagne. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 
 @interface YRKSpinningProgressIndicator : NSView {
     int _position;
