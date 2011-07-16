@@ -15,45 +15,32 @@
     
     NSColor *_foreColor;
     NSColor *_backColor;
-    BOOL _drawBackground;
     
     NSTimer *_fadeOutAnimationTimer;
     BOOL _isFadingOut;
-	
-	BOOL _displayWhenStopped;
+    BOOL _drawsBackground;
     
+    BOOL _displayedWhenStopped;
+    BOOL _usesThreadedAnimation;
+	
     // For determinate mode
     BOOL _isIndeterminate;
     double _currentValue;
     double _maxValue;
-    
-    BOOL _usesThreadedAnimation;
 }
+
+@property (nonatomic, copy) NSColor *color;
+@property (nonatomic, copy) NSColor *backgroundColor;
+@property (nonatomic, assign) BOOL drawsBackground;
+
+@property (nonatomic, assign, getter=isDisplayedWhenStopped) BOOL displayedWhenStopped;
+@property (nonatomic, assign) BOOL usesThreadedAnimation;
+
+@property (nonatomic, assign, getter=isIndeterminate) BOOL indeterminate;
+@property (nonatomic, assign) double doubleValue;
+@property (nonatomic, assign) double maxValue;
 
 - (void)stopAnimation:(id)sender;
 - (void)startAnimation:(id)sender;
-
-
-// Accessors
-
-- (NSColor *)color;
-- (void)setColor:(NSColor *)value;
-- (NSColor *)backgroundColor;
-- (void)setBackgroundColor:(NSColor *)value;
-- (BOOL)drawsBackground;
-- (void)setDrawsBackground:(BOOL)value;
-
-- (BOOL)isIndeterminate;
-- (void)setIndeterminate:(BOOL)isIndeterminate;
-- (double)doubleValue;
-- (void)setDoubleValue:(double)doubleValue;
-- (double)maxValue;
-- (void)setMaxValue:(double)maxValue;
-
-- (void)setUsesThreadedAnimation:(BOOL)useThreaded;
-- (BOOL)usesThreadedAnimation;
-
-- (void)setDisplayedWhenStopped:(BOOL)displayWhenStopped;
-- (BOOL)displayWhenStopped;
 
 @end
