@@ -275,7 +275,7 @@
 							<reference key="NSNextKeyView" ref="601836782"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="903775223">
-								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
 								<string key="NSContents">Use threaded animation</string>
 								<reference key="NSSupport" ref="350122673"/>
@@ -2475,7 +2475,6 @@
 							<string>changeForegroundColor:</string>
 							<string>startDeterminateDemo:</string>
 							<string>takeThreadedFrom:</string>
-							<string>takeUseFancyAnimationFrom:</string>
 							<string>toggleDisplayWhenStopped:</string>
 							<string>toggleDrawBackground:</string>
 							<string>toggleProgressIndicator:</string>
@@ -2483,7 +2482,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2502,7 +2500,6 @@
 							<string>changeForegroundColor:</string>
 							<string>startDeterminateDemo:</string>
 							<string>takeThreadedFrom:</string>
-							<string>takeUseFancyAnimationFrom:</string>
 							<string>toggleDisplayWhenStopped:</string>
 							<string>toggleDrawBackground:</string>
 							<string>toggleProgressIndicator:</string>
@@ -2524,10 +2521,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">takeThreadedFrom:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">takeUseFancyAnimationFrom:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -2555,7 +2548,6 @@
 							<string>_backgroundColorWell</string>
 							<string>_determinateDemoButton</string>
 							<string>_displayWhenStoppedButton</string>
-							<string>_fancyAnimationButton</string>
 							<string>_foregroundColorWell</string>
 							<string>_nspiToggleButton</string>
 							<string>_progressIndicator</string>
@@ -2566,7 +2558,6 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSColorWell</string>
-							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSColorWell</string>
@@ -2584,7 +2575,6 @@
 							<string>_backgroundColorWell</string>
 							<string>_determinateDemoButton</string>
 							<string>_displayWhenStoppedButton</string>
-							<string>_fancyAnimationButton</string>
 							<string>_foregroundColorWell</string>
 							<string>_nspiToggleButton</string>
 							<string>_progressIndicator</string>
@@ -2604,10 +2594,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_displayWhenStoppedButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_fancyAnimationButton</string>
 								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
