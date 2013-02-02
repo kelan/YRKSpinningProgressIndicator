@@ -79,14 +79,13 @@
 
 - (void)runDeterminateDemoInBackgroundThread
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
-    double i;
-    for (i = 0; i <= 100; i += 0.5) {
-        usleep(20000);
-        [_turboFan setDoubleValue:i];
+    @autoreleasepool {
+        double i;
+        for (i = 0; i <= 100; i += 0.5) {
+            usleep(20000);
+            [_turboFan setDoubleValue:i];
+        }
     }
-    [pool release];
     
     [self performSelectorOnMainThread:@selector(finishDeterminateDemo)
                            withObject:nil
