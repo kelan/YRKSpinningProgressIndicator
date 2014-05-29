@@ -1,4 +1,4 @@
-# YRKSpinningProgressIndicator and SPIDemo.app
+# YRKSpinningProgressIndicator
 
 by Kelan Champagne (http://yeahrightkeller.com)
 
