@@ -5,31 +5,10 @@
 //
 
 
-@interface YRKSpinningProgressIndicator : NSView {
-    int _position;
-    int _numFins;
-    NSColor **_finColors;
-    
-    BOOL _isAnimating;
-    BOOL _isFadingOut;
-    NSTimer *_animationTimer;
-	NSThread *_animationThread;
-    
-    NSColor *_foreColor;
-    NSColor *_backColor;
-    BOOL _drawsBackground;
-    
-    BOOL _displayedWhenStopped;
-    BOOL _usesThreadedAnimation;
-	
-    // For determinate mode
-    BOOL _isIndeterminate;
-    double _currentValue;
-    double _maxValue;
-}
+@interface YRKSpinningProgressIndicator : NSView
 
-@property (nonatomic, retain) NSColor *color;
-@property (nonatomic, retain) NSColor *backgroundColor;
+@property (nonatomic, strong) NSColor *color;
+@property (nonatomic, strong) NSColor *backgroundColor;
 @property (nonatomic, assign) BOOL drawsBackground;
 
 @property (nonatomic, assign, getter=isDisplayedWhenStopped) BOOL displayedWhenStopped;
