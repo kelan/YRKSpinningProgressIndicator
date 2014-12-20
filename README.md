@@ -33,22 +33,15 @@ email from Rowan Beentje (from SequelPro).
     * Can even be changed while animating.
 * Background color can be set arbitrarily or be transparent.
 * Has determinate mode that is a pie-chart of the progress.
-* Mostly compatible with OS X 10.4 (Tiger).  I think there might be some issues
-  with the run modes with the NSTimer-based animation, but I don't have access
-  to a Tiger machine right now, so I can't check.
 
 
 ## Code Architecture
 
+* Requires ARC.
 * Implemented as a subclass of NSView.
 * Animation is done with an NSTimer, or on a separate thread (when
   setUsesThreadedAnimation:YES).  You can even swap between the two while the
   animation is running.
-
-
-## Code Conventions
-
-* Instance variables are prefixed with an underscore (i.e. "_").
 
 
 ## Contributing

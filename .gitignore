@@ -4,5 +4,6 @@
 *.xcodeproj/*.perspective
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
+*.xccheckout
 *.xcodeproj/*.tm_build_errors
 Demo/SPIDemo.xcodeproj/project.xcworkspace/xcuserdata
