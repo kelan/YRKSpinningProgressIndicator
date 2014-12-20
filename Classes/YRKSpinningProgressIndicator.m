@@ -6,94 +6,56 @@
 
 #import "YRKSpinningProgressIndicator.h"
 
-
 // Some constants to control the animation
-#define kAlphaWhenStopped   0.15
-#define kFadeMultiplier     0.85
-
+const CGFloat kAlphaWhenStopped = 0.15;
+const CGFloat kFadeMultiplier = 0.85l;
+const NSUInteger kNumberOfFins = 12;
+const NSTimeInterval kFadeOutTime = 0.7;  // seconds
 
 @interface YRKSpinningProgressIndicator ()
-{
-    int _position;
-    int _numFins;
-    NSMutableArray *_finColors;
-    
-    BOOL _isAnimating;
-    BOOL _isFadingOut;
-    NSTimer *_animationTimer;
-    NSThread *_animationThread;
-    
-    NSColor *_foreColor;
-    NSColor *_backColor;
-    BOOL _drawsBackground;
-    
-    BOOL _displayedWhenStopped;
-    BOOL _usesThreadedAnimation;
-    
-    // For determinate mode
-    BOOL _isIndeterminate;
-    double _currentValue;
-    double _maxValue;
-}
-
-- (void)updateFrame:(NSTimer *)timer;
-- (void)animateInBackgroundThread;
-- (void)actuallyStartAnimation;
-- (void)actuallyStopAnimation;
-- (void)generateFinColorsStartAtPosition:(int)startPosition;
-
 @end
 
 
-@implementation YRKSpinningProgressIndicator
+@implementation YRKSpinningProgressIndicator {
+    int _currentPosition;
+    NSMutableArray *_finColors;
 
-@synthesize color = _foreColor;
-@synthesize backgroundColor = _backColor;
-@synthesize drawsBackground = _drawsBackground;
-@synthesize displayedWhenStopped = _displayedWhenStopped;
-@synthesize usesThreadedAnimation = _usesThreadedAnimation;
-@synthesize indeterminate = _isIndeterminate;
-@synthesize doubleValue = _currentValue;
-@synthesize maxValue = _maxValue;
+    BOOL _isAnimating;
+    NSTimer *_animationTimer;
+    NSThread *_animationThread;
+    BOOL _isFadingOut;
+    NSDate *_fadeOutStartTime;
+}
 
+#pragma mark - Init
 
-#pragma mark Init
-
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _position = 0;
-        _numFins = 12;
-        _finColors = [[NSMutableArray alloc] initWithCapacity:_numFins];
-        
-        for (int i=0; i<_numFins; i++) {
-            [_finColors addObject:[NSColor clearColor]];
-        }
-        
+        _currentPosition = 0;
+        _finColors = [[NSMutableArray alloc] initWithCapacity:kNumberOfFins];
+
         _isAnimating = NO;
         _isFadingOut = NO;
-        
-        _foreColor = [NSColor blackColor];
-        _backColor = [NSColor clearColor];
+
+        // user setter, to generate all fin colors
+        self.color = [NSColor blackColor];
+        _backgroundColor = [NSColor clearColor];
         _drawsBackground = NO;
         
         _displayedWhenStopped = YES;
         _usesThreadedAnimation = YES;
         
-        _isIndeterminate = YES;
+        _indeterminate = YES;
         _currentValue = 0.0;
         _maxValue = 100.0;
     }
     return self;
 }
 
-- (void) dealloc
-{
-    if (_isAnimating) [self stopAnimation:self];
-}
 
-# pragma mark NSView overrides
+#pragma mark - NSView overrides
 
 - (void)viewDidMoveToWindow
 {
@@ -110,76 +72,68 @@
 
 - (void)drawRect:(NSRect)rect
 {
-    // Determine size based on current bounds
-    NSSize size = [self bounds].size;
-    CGFloat theMaxSize;
-    if(size.width >= size.height)
-        theMaxSize = size.height;
-    else
-        theMaxSize = size.width;
-    
+    const CGSize size = self.bounds.size;
+    const CGFloat length = MIN(size.height, size.width);
+
     // fill the background, if set
-    if(_drawsBackground) {
-        [_backColor set];
+    if (_drawsBackground) {
+        [_backgroundColor set];
         [NSBezierPath fillRect:[self bounds]];
     }
     
-    CGContextRef currentContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-    [NSGraphicsContext saveGraphicsState];
-    
+    CGContextRef ctx = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+
     // Move the CTM so 0,0 is at the center of our bounds
-    CGContextTranslateCTM(currentContext,[self bounds].size.width/2,[self bounds].size.height/2);
+    CGContextTranslateCTM(ctx, size.width/2, size.height/2);
     
-    if (_isIndeterminate) {
+    if (_indeterminate) {
         NSBezierPath *path = [[NSBezierPath alloc] init];
-        CGFloat lineWidth = 0.0859375 * theMaxSize; // should be 2.75 for 32x32
-        CGFloat lineStart = 0.234375 * theMaxSize; // should be 7.5 for 32x32
-        CGFloat lineEnd = 0.421875 * theMaxSize; // should be 13.5 for 32x32
+        // magic constants determined empirically, to make it look like the NS version.
+        const CGFloat lineWidth = 0.0859375 * length; // should be 2.75 for 32x32
+        const CGFloat lineStart = 0.234375 * length; // should be 7.5 for 32x32
+        const CGFloat lineEnd = 0.421875 * length; // should be 13.5 for 32x32
         [path setLineWidth:lineWidth];
         [path setLineCapStyle:NSRoundLineCapStyle];
-        [path moveToPoint:NSMakePoint(0,lineStart)];
-        [path lineToPoint:NSMakePoint(0,lineEnd)];
-        
-        for (int i=0; i<_numFins; i++) {
-            if(_isAnimating) {
-                [((NSColor*)[_finColors objectAtIndex:i]) set];
-            }
-            else {
-                [[_foreColor colorWithAlphaComponent:kAlphaWhenStopped] set];
-            }
-            
+        [path moveToPoint:NSMakePoint(0, lineStart)];
+        [path lineToPoint:NSMakePoint(0, lineEnd)];
+
+        // Draw all the fins by rotating the CTM, then just redraw the same path again.
+        for (NSUInteger i = 0; i < kNumberOfFins; i++) {
+            NSColor *c = _isAnimating ? _finColors[i] : [_color colorWithAlphaComponent:kAlphaWhenStopped];
+            [c set];
             [path stroke];
-            
-            // we draw all the fins by rotating the CTM, then just redraw the same segment again
-            CGContextRotateCTM(currentContext, 6.282185/_numFins);
+
+            CGContextRotateCTM(ctx, 2 * M_PI/kNumberOfFins);
         }
     }
     else {
-        CGFloat lineWidth = 1 + (0.01 * theMaxSize);
-        CGFloat circleRadius = (theMaxSize - lineWidth) / 2.1;
+        CGFloat lineWidth = 1 + (0.01 * length);
+        CGFloat circleRadius = (length - lineWidth) / 2.1;
         NSPoint circleCenter = NSMakePoint(0, 0);
-        [_foreColor set];
+        [_color set];
         NSBezierPath *path = [[NSBezierPath alloc] init];
         [path setLineWidth:lineWidth];
-        [path appendBezierPathWithOvalInRect:NSMakeRect(-circleRadius, -circleRadius, circleRadius*2, circleRadius*2)];
+        [path appendBezierPathWithOvalInRect:NSMakeRect(-circleRadius,
+                                                        -circleRadius,
+                                                        circleRadius * 2,
+                                                        circleRadius * 2)];
         [path stroke];
         path = [[NSBezierPath alloc] init];
         [path appendBezierPathWithArcWithCenter:circleCenter radius:circleRadius startAngle:90 endAngle:90-(360*(_currentValue/_maxValue)) clockwise:YES];
         [path lineToPoint:circleCenter] ;
         [path fill];
     }
-    
-    [NSGraphicsContext restoreGraphicsState];
 }
 
 
-#pragma mark NSProgressIndicator API
+#pragma mark - NSProgressIndicator API
 
 - (void)startAnimation:(id)sender
 {
-    if (!_isIndeterminate) return;
-    if (_isAnimating && !_isFadingOut) return;
-    
+    if (!_indeterminate || (_isAnimating && !_isFadingOut)) {
+        return;
+    }
+
     [self actuallyStartAnimation];
 }
 
@@ -187,6 +141,7 @@
 {
     // animate to stopped state
     _isFadingOut = YES;
+    _fadeOutStartTime = [NSDate date];
 }
 
 /// Only the spinning style is implemented
@@ -198,18 +153,17 @@
 }
 
 
-# pragma mark Custom Accessors
+#pragma mark - Custom Accessors
 
 - (void)setColor:(NSColor *)value
 {
-    if (_foreColor != value) {
-        _foreColor = value;
+    if (_color != value) {
+        _color = [value copy];
         
-        // generate all the fin colors, with the alpha components
-        // they already have
-        for (int i=0; i<_numFins; i++) {
-            CGFloat alpha = [[_finColors objectAtIndex:i] alphaComponent];
-            [_finColors replaceObjectAtIndex:i withObject:[_foreColor colorWithAlphaComponent:alpha]];
+        // Set all the fin colors, with their current alpha components.
+        for (NSUInteger i = 0; i < kNumberOfFins; i++) {
+            CGFloat alpha = [self alphaValueForPosition:i];
+            _finColors[i] = [_color colorWithAlphaComponent:alpha];
         }
         
         [self setNeedsDisplay:YES];
@@ -218,8 +172,8 @@
 
 - (void)setBackgroundColor:(NSColor *)value
 {
-    if (_backColor != value) {
-        _backColor = value;
+    if (_backgroundColor != value) {
+        _backgroundColor = [value copy];
         [self setNeedsDisplay:YES];
     }
 }
@@ -232,24 +186,26 @@
     [self setNeedsDisplay:YES];
 }
 
-- (void)setIndeterminate:(BOOL)isIndeterminate
+- (void)setIsIndeterminate:(BOOL)isIndeterminate
 {
-    _isIndeterminate = isIndeterminate;
-    if (!_isIndeterminate && _isAnimating) [self stopAnimation:self];
+    _indeterminate = isIndeterminate;
+    if (!_indeterminate && _isAnimating) {
+        [self stopAnimation:self];
+    }
     [self setNeedsDisplay:YES];
 }
 
-- (void)setDoubleValue:(double)doubleValue
+- (void)setCurrentValue:(CGFloat)currentValue
 {
     // Automatically put it into determinate mode if it's not already.
-    if (_isIndeterminate) {
-        [self setIndeterminate:NO];
+    if (_indeterminate) {
+        self.indeterminate = NO;
     }
-    _currentValue = doubleValue;
+    _currentValue = currentValue;
     [self setNeedsDisplay:YES];
 }
 
-- (void)setMaxValue:(double)maxValue
+- (void)setMaxValue:(CGFloat)maxValue
 {
     _maxValue = maxValue;
     [self setNeedsDisplay:YES];
@@ -274,55 +230,29 @@
     
     // Show/hide ourself if necessary
     if (!_isAnimating) {
-        if (_displayedWhenStopped && [self isHidden]) {
-            [self setHidden:NO];
-        }
-        else if (!_displayedWhenStopped && ![self isHidden]) {
-            [self setHidden:YES];
-        }
+        self.hidden = !_displayedWhenStopped;
     }
 }
 
 
-#pragma mark Private
+#pragma mark - Private
 
-- (void)updateFrame:(NSTimer *)timer
+- (void)updateFrameFromTimer:(NSTimer *)timer
 {
-    if(_position > 0) {
-        _position--;
-    }
-    else {
-        _position = _numFins - 1;
-    }
-    
     // update the colors
-    CGFloat minAlpha = _displayedWhenStopped ? kAlphaWhenStopped : 0.01;
-    for (int i=0; i<_numFins; i++) {
-        // want each fin to fade exponentially over _numFins frames of animation
-        CGFloat newAlpha = [[_finColors objectAtIndex:i] alphaComponent] * kFadeMultiplier;
-        if (newAlpha < minAlpha)
-            newAlpha = minAlpha;
-        [_finColors replaceObjectAtIndex:i withObject:[_foreColor colorWithAlphaComponent:newAlpha]];
+    const CGFloat minAlpha = _displayedWhenStopped ? kAlphaWhenStopped : 0.0;
+    for (NSUInteger i = 0; i < kNumberOfFins; i++) {
+        CGFloat newAlpha = MAX([self alphaValueForPosition:i], minAlpha);
+        _finColors[i] = [_color colorWithAlphaComponent:newAlpha];
     }
     
     if (_isFadingOut) {
         // check if the fadeout is done
-        BOOL done = YES;
-        for (int i=0; i<_numFins; i++) {
-            if (fabs([[_finColors objectAtIndex:i] alphaComponent] - minAlpha) > 0.01) {
-                done = NO;
-                break;
-            }
-        }
-        if (done) {
+        if ([_fadeOutStartTime timeIntervalSinceNow] < -kFadeOutTime) {
             [self actuallyStopAnimation];
         }
     }
-    else {
-        // "light up" the next fin (with full alpha)
-        [_finColors replaceObjectAtIndex:_position withObject:_foreColor];
-    }
-    
+
     if (_usesThreadedAnimation) {
         // draw now instead of waiting for setNeedsDisplay (that's the whole reason
         // we're animating from background thread)
@@ -331,6 +261,24 @@
     else {
         [self setNeedsDisplay:YES];
     }
+
+    // update the currentPosition for next time, unless fading out
+    if (!_isFadingOut) {
+        _currentPosition = (_currentPosition + 1) % kNumberOfFins;
+    }
+}
+
+/// Returns the alpha value for the given position.
+/// Each fin should fade exponentially over _numberOfFins frames of animation.
+/// @param position is [0,kNumberOfFins)
+- (CGFloat)alphaValueForPosition:(NSUInteger)position
+{
+    CGFloat normalValue = pow(kFadeMultiplier, (position + _currentPosition) % kNumberOfFins);
+    if (_isFadingOut) {
+        NSTimeInterval timeSinceStop = -[_fadeOutStartTime timeIntervalSinceNow];
+        normalValue *= kFadeOutTime - timeSinceStop;
+    }
+    return normalValue;
 }
 
 - (void)actuallyStartAnimation
@@ -342,10 +290,11 @@
     _isFadingOut = NO;
     
     // always start from the top
-    _position = 1;
+    _currentPosition = 0;
     
-    if (!_displayedWhenStopped)
+    if (!_displayedWhenStopped) {
         [self setHidden:NO];
+    }
     
     if ([self window]) {
         // Why animate if not visible? viewDidMoveToWindow will re-call this method when needed.
@@ -356,7 +305,7 @@
         else {
             _animationTimer = [NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
                                                       target:self
-                                                    selector:@selector(updateFrame:)
+                                                    selector:@selector(updateFrameFromTimer:)
                                                     userInfo:nil
                                                      repeats:YES];
             
@@ -372,8 +321,9 @@
     _isAnimating = NO;
     _isFadingOut = NO;
     
-    if (!_displayedWhenStopped)
+    if (!_displayedWhenStopped) {
         [self setHidden:YES];
+    }
     
     if (_animationThread) {
         // we were using threaded animation
@@ -391,15 +341,6 @@
     [self setNeedsDisplay:YES];
 }
 
-- (void)generateFinColorsStartAtPosition:(int)startPosition
-{
-    for (int i=0; i<_numFins; i++) {
-        NSColor *oldColor = _finColors[i];
-        CGFloat alpha = [oldColor alphaComponent];
-        [_finColors replaceObjectAtIndex:i withObject:[_foreColor colorWithAlphaComponent:alpha]];
-    }
-}
-
 - (void)animateInBackgroundThread
 {
     @autoreleasepool {
@@ -408,11 +349,11 @@
         
         // Set the rev per minute here
         int omega = 100; // RPM
-        int animationDelay = 60*1000000/omega/_numFins;
+        int animationDelay = 60*1000000/omega/kNumberOfFins;
         int poolFlushCounter = 0;
         
         do {
-            [self updateFrame:nil];
+            [self updateFrameFromTimer:nil];
             usleep(animationDelay);
             poolFlushCounter++;
             if (poolFlushCounter > 256) {

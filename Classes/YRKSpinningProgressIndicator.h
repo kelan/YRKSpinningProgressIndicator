@@ -9,16 +9,16 @@
 
 @interface YRKSpinningProgressIndicator : NSView
 
-@property (nonatomic, strong) NSColor *color;
-@property (nonatomic, strong) NSColor *backgroundColor;
+@property (nonatomic, copy) NSColor *color;
+@property (nonatomic, copy) NSColor *backgroundColor;
 @property (nonatomic, assign) BOOL drawsBackground;
 
 @property (nonatomic, assign, getter=isDisplayedWhenStopped) BOOL displayedWhenStopped;
 @property (nonatomic, assign) BOOL usesThreadedAnimation;
 
 @property (nonatomic, assign, getter=isIndeterminate) BOOL indeterminate;
-@property (nonatomic, assign) double doubleValue;
-@property (nonatomic, assign) double maxValue;
+@property (nonatomic, assign) CGFloat currentValue;
+@property (nonatomic, assign) CGFloat maxValue;
 
 - (void)stopAnimation:(id)sender;
 - (void)startAnimation:(id)sender;

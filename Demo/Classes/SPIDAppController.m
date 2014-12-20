@@ -8,71 +8,77 @@
 
 #import "YRKSpinningProgressIndicator.h"
 
-@interface SPIDAppController (PrivateMethods)
 
-- (void)runDeterminateDemoInBackgroundThread;
-
+@interface SPIDAppController () <NSApplicationDelegate>
+@property (nonatomic) IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic) IBOutlet YRKSpinningProgressIndicator *turboFan;
+@property (nonatomic) IBOutlet NSButton *nspiToggleButton;
+@property (nonatomic) IBOutlet NSButton *yrkpiToggleButton;
+@property (nonatomic) IBOutlet NSButton *threadedAnimationButton;
+@property (nonatomic) IBOutlet NSButton *displayWhenStoppedButton;
+@property (nonatomic) IBOutlet NSColorWell *foregroundColorWell;
+@property (nonatomic) IBOutlet NSColorWell *backgroundColorWell;
+@property (nonatomic) IBOutlet NSButton *determinateDemoButton;
 @end
 
 
-@implementation SPIDAppController
-
--(id)init
-{
-    self = [super init];
-    if (self != nil) {
-        _nspiIsRunning = NO;
-        _yrkpiIsRunning = NO;
-    }
-    return self;
+@implementation SPIDAppController {
+    BOOL _yrkpiIsRunning;
+    BOOL _nspiIsRunning;
 }
+
+
+#pragma mark - NSApplicationDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    [_foregroundColorWell setColor:[NSColor colorWithDeviceRed:0.2 green:0.2 blue:0.2 alpha:1.0]];
-    [_backgroundColorWell setColor:[NSColor whiteColor]];
+    _foregroundColorWell.color = [NSColor colorWithDeviceRed:0.2 green:0.2 blue:0.2 alpha:1.0];
+    _backgroundColorWell.color = [NSColor whiteColor];
     [self changeForegroundColor:_foregroundColorWell];
     [self changeBackgroundColor:_backgroundColorWell];
 
-    [_turboFan setDrawsBackground:NO];
+    _turboFan.drawsBackground = NO;
     
     [self takeThreadedFrom:_threadedAnimationButton];
 }
 
+
+#pragma mark - IBActions
+
 - (IBAction)toggleProgressIndicator:(id)sender
 {
-    if(_nspiIsRunning) {
+    if (_nspiIsRunning) {
         [_progressIndicator stopAnimation:self];
-        [_nspiToggleButton setTitle:@"Start"];
+        _nspiToggleButton.title = @"Start";
         _nspiIsRunning = NO;
     }
     else {
         [_progressIndicator startAnimation:self];
-        [_nspiToggleButton setTitle:@"Stop"];
+        _nspiToggleButton.title = @"Stop";
         _nspiIsRunning = YES;
     }
 }
 
 - (IBAction)toggleTurboFan:(id)sender
 {
-    if(_yrkpiIsRunning) {
+    if (_yrkpiIsRunning) {
         [_turboFan stopAnimation:self];
-        [_yrkpiToggleButton setTitle:@"Start"];
+        _yrkpiToggleButton.title = @"Start";
         _yrkpiIsRunning = NO;
     }
     else {
         [_turboFan startAnimation:self];
-        [_yrkpiToggleButton setTitle:@"Stop"];
+        _yrkpiToggleButton.title = @"Stop";
         _yrkpiIsRunning = YES;
     }
 }
 
-- (IBAction)startDeterminateDemo:(id)sender
+- (IBAction)startDeterminateDemo:(NSButton *)sender
 {
     [_determinateDemoButton setEnabled:NO];
     
-    [_turboFan setIndeterminate:NO];
-    [_turboFan setDoubleValue:0];
+    _turboFan.indeterminate = NO;
+    _turboFan.currentValue = 0.0;
     
     [NSThread detachNewThreadSelector:@selector(runDeterminateDemoInBackgroundThread) toTarget:self withObject:nil];
 }
@@ -80,57 +86,49 @@
 - (void)runDeterminateDemoInBackgroundThread
 {
     @autoreleasepool {
-        double i;
-        for (i = 0; i <= 100; i += 0.5) {
+        for (CGFloat value = 0.0; value <= 100.0; value += 0.5) {
             usleep(20000);
-            [_turboFan setDoubleValue:i];
+            _turboFan.currentValue = value;
         }
     }
-    
-    [self performSelectorOnMainThread:@selector(finishDeterminateDemo)
-                           withObject:nil
-                        waitUntilDone:NO];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_turboFan setIndeterminate:YES];
+        if (_yrkpiIsRunning) {
+            [_turboFan startAnimation:self];
+        }
+
+        [_determinateDemoButton setEnabled:YES];
+    });
 }
 
-- (void)finishDeterminateDemo
+- (IBAction)changeForegroundColor:(NSColorWell *)sender
 {
-    [_turboFan setIndeterminate:YES];
-    if(_yrkpiIsRunning) {
-        [_turboFan startAnimation:self];
-    }
-    
-    [_determinateDemoButton setEnabled:YES];
-}
-
-- (IBAction)changeForegroundColor:(id)sender
-{
-    [_turboFan setColor:[sender color]];
+    _turboFan.color = [sender color];
 }
 
 
-- (IBAction)changeBackgroundColor:(id)sender
+- (IBAction)changeBackgroundColor:(NSColorWell *)sender
 {
-    [_turboFan setBackgroundColor:[sender color]];
+    _turboFan.backgroundColor = [sender color];
 }
 
-- (IBAction)toggleDrawBackground:(id)sender
+
+- (IBAction)toggleDrawBackground:(NSButton *)sender
 {
-    if([sender state] == NSOnState)
-        [_turboFan setDrawsBackground:YES];
-    else
-        [_turboFan setDrawsBackground:NO];
+    _turboFan.drawsBackground = ([sender state] == NSOnState);
 }
 
-- (IBAction)toggleDisplayWhenStopped:(id)sender
+- (IBAction)toggleDisplayWhenStopped:(NSButton *)sender
 {
-	[_turboFan setDisplayedWhenStopped:([sender state] == NSOnState)];
+    _turboFan.displayedWhenStopped = ([sender state] == NSOnState);
 }
 
-- (IBAction)takeThreadedFrom:(id)sender
+- (IBAction)takeThreadedFrom:(NSButton *)sender
 {
-    BOOL useThreaded = (BOOL)[sender intValue];
-    [_turboFan setUsesThreadedAnimation:useThreaded];
-    [_progressIndicator setUsesThreadedAnimation:useThreaded];
+    BOOL useThreaded = [sender intValue];
+    _turboFan.usesThreadedAnimation = useThreaded;
+    _progressIndicator.usesThreadedAnimation = useThreaded;
 }
 
 @end
