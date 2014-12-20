@@ -95,8 +95,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
+			indentWidth = 4;
 			name = TurboFan;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
@@ -230,6 +232,7 @@
 			buildSettings = {
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = SPIDemo;
 			};
 			name = Debug;
@@ -238,6 +241,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = SPIDemo;
 			};
 			name = Release;
@@ -246,6 +250,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C80A7313D14CF8003D17E4 /* debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PREFIX_HEADER = Code/SPIDemo_Prefix.pch;
 			};
 			name = Debug;
@@ -254,6 +259,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C80A7413D14CF8003D17E4 /* release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PREFIX_HEADER = Code/SPIDemo_Prefix.pch;
 			};
 			name = Release;
