@@ -21,7 +21,7 @@
     BOOL _isAnimating;
     BOOL _isFadingOut;
     NSTimer *_animationTimer;
-	NSThread *_animationThread;
+    NSThread *_animationThread;
     
     NSColor *_foreColor;
     NSColor *_backColor;
@@ -29,7 +29,7 @@
     
     BOOL _displayedWhenStopped;
     BOOL _usesThreadedAnimation;
-	
+    
     // For determinate mode
     BOOL _isIndeterminate;
     double _currentValue;
@@ -78,7 +78,7 @@
         _backColor = [NSColor clearColor];
         _drawsBackground = NO;
         
-		_displayedWhenStopped = YES;
+        _displayedWhenStopped = YES;
         _usesThreadedAnimation = YES;
         
         _isIndeterminate = YES;
@@ -98,9 +98,9 @@
 - (void)viewDidMoveToWindow
 {
     [super viewDidMoveToWindow];
-
+    
     if ([self window] == nil) {
-        // No window?  View hierarchy may be going away.  Dispose timer to clear circular retain of timer to self to timer.
+        // No window? View hierarchy may be going away. Dispose timer to clear circular retain of timer to self to timer.
         [self actuallyStopAnimation];
     }
     else if (_isAnimating) {
@@ -117,29 +117,29 @@
         theMaxSize = size.height;
     else
         theMaxSize = size.width;
-
+    
     // fill the background, if set
     if(_drawsBackground) {
         [_backColor set];
         [NSBezierPath fillRect:[self bounds]];
     }
-
+    
     CGContextRef currentContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
     [NSGraphicsContext saveGraphicsState];
-
+    
     // Move the CTM so 0,0 is at the center of our bounds
     CGContextTranslateCTM(currentContext,[self bounds].size.width/2,[self bounds].size.height/2);
-
+    
     if (_isIndeterminate) {
         NSBezierPath *path = [[NSBezierPath alloc] init];
         CGFloat lineWidth = 0.0859375 * theMaxSize; // should be 2.75 for 32x32
         CGFloat lineStart = 0.234375 * theMaxSize; // should be 7.5 for 32x32
-        CGFloat lineEnd = 0.421875 * theMaxSize;  // should be 13.5 for 32x32
+        CGFloat lineEnd = 0.421875 * theMaxSize; // should be 13.5 for 32x32
         [path setLineWidth:lineWidth];
         [path setLineCapStyle:NSRoundLineCapStyle];
         [path moveToPoint:NSMakePoint(0,lineStart)];
         [path lineToPoint:NSMakePoint(0,lineEnd)];
-
+        
         for (int i=0; i<_numFins; i++) {
             if(_isAnimating) {
                 [((NSColor*)[_finColors objectAtIndex:i]) set];
@@ -147,9 +147,9 @@
             else {
                 [[_foreColor colorWithAlphaComponent:kAlphaWhenStopped] set];
             }
-
+            
             [path stroke];
-
+            
             // we draw all the fins by rotating the CTM, then just redraw the same segment again
             CGContextRotateCTM(currentContext, 6.282185/_numFins);
         }
@@ -168,7 +168,7 @@
         [path lineToPoint:circleCenter] ;
         [path fill];
     }
-
+    
     [NSGraphicsContext restoreGraphicsState];
 }
 
@@ -179,7 +179,7 @@
 {
     if (!_isIndeterminate) return;
     if (_isAnimating && !_isFadingOut) return;
-	
+    
     [self actuallyStartAnimation];
 }
 
@@ -270,17 +270,17 @@
 
 - (void)setDisplayedWhenStopped:(BOOL)displayedWhenStopped
 {
-	_displayedWhenStopped = displayedWhenStopped;
-	
-	// Show/hide ourself if necessary
-	if (!_isAnimating) {
-		if (_displayedWhenStopped && [self isHidden]) {
-			[self setHidden:NO];
-		}
-		else if (!_displayedWhenStopped && ![self isHidden]) {
-			[self setHidden:YES];
-		}
-	}
+    _displayedWhenStopped = displayedWhenStopped;
+    
+    // Show/hide ourself if necessary
+    if (!_isAnimating) {
+        if (_displayedWhenStopped && [self isHidden]) {
+            [self setHidden:NO];
+        }
+        else if (!_displayedWhenStopped && ![self isHidden]) {
+            [self setHidden:YES];
+        }
+    }
 }
 
 
@@ -344,11 +344,11 @@
     // always start from the top
     _position = 1;
     
-	if (!_displayedWhenStopped)
-		[self setHidden:NO];
-
+    if (!_displayedWhenStopped)
+        [self setHidden:NO];
+    
     if ([self window]) {
-        // Why animate if not visible?  viewDidMoveToWindow will re-call this method when needed.
+        // Why animate if not visible? viewDidMoveToWindow will re-call this method when needed.
         if (_usesThreadedAnimation) {
             _animationThread = [[NSThread alloc] initWithTarget:self selector:@selector(animateInBackgroundThread) object:nil];
             [_animationThread start];
@@ -377,12 +377,12 @@
     
     if (_animationThread) {
         // we were using threaded animation
-		[_animationThread cancel];
-		if (![_animationThread isFinished]) {
-			[[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
-		}
+        [_animationThread cancel];
+        if (![_animationThread isFinished]) {
+            [[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        }
         _animationThread = nil;
-	}
+    }
     else if (_animationTimer) {
         // we were using timer-based animation
         [_animationTimer invalidate];
@@ -418,7 +418,7 @@
             if (poolFlushCounter > 256) {
                 poolFlushCounter = 0;
             }
-        } while (![[NSThread currentThread] isCancelled]); 
+        } while (![[NSThread currentThread] isCancelled]);
     }
 }
 

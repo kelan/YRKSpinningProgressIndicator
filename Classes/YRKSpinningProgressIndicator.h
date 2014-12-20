@@ -7,8 +7,8 @@
 
 @interface YRKSpinningProgressIndicator : NSView
 
-@property (nonatomic, retain) NSColor *color;
-@property (nonatomic, retain) NSColor *backgroundColor;
+@property (nonatomic, strong) NSColor *color;
+@property (nonatomic, strong) NSColor *backgroundColor;
 @property (nonatomic, assign) BOOL drawsBackground;
 
 @property (nonatomic, assign, getter=isDisplayedWhenStopped) BOOL displayedWhenStopped;
