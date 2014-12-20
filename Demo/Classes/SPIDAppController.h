@@ -4,6 +4,7 @@
 //  Copyright 2009 Kelan Champagne. All rights reserved.
 //
 
+@import Cocoa;
 
 @class YRKSpinningProgressIndicator;
 

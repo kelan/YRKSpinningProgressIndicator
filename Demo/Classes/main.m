@@ -4,7 +4,7 @@
 //  Copyright 2009 Kelan Champagne. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
 int main(int argc, char *argv[])
 {

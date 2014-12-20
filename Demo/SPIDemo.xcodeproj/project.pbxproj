@@ -29,7 +29,6 @@
 		D8FEFE9F1936F40100418044 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Classes/main.m; sourceTree = "<group>"; };
 		D8FEFEA01936F40100418044 /* SPIDAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPIDAppController.h; path = Classes/SPIDAppController.h; sourceTree = "<group>"; };
 		D8FEFEA11936F40100418044 /* SPIDAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPIDAppController.m; path = Classes/SPIDAppController.m; sourceTree = "<group>"; };
-		D8FEFEA21936F40100418044 /* SPIDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPIDemo_Prefix.pch; path = Classes/SPIDemo_Prefix.pch; sourceTree = "<group>"; };
 		D8FEFEA51936F42000418044 /* YRKSpinningProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YRKSpinningProgressIndicator.h; path = ../Classes/YRKSpinningProgressIndicator.h; sourceTree = "<group>"; };
 		D8FEFEA61936F42000418044 /* YRKSpinningProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YRKSpinningProgressIndicator.m; path = ../Classes/YRKSpinningProgressIndicator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,6 +48,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D8FEFE9F1936F40100418044 /* main.m */,
 				D8FEFEA01936F40100418044 /* SPIDAppController.h */,
 				D8FEFEA11936F40100418044 /* SPIDAppController.m */,
 				D8FEFEA51936F42000418044 /* YRKSpinningProgressIndicator.h */,
@@ -87,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				35C80A7113D14CD9003D17E4 /* Configs */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -97,15 +96,6 @@
 			name = TurboFan;
 			sourceTree = "<group>";
 			tabWidth = 4;
-		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				D8FEFEA21936F40100418044 /* SPIDemo_Prefix.pch */,
-				D8FEFE9F1936F40100418044 /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
@@ -229,10 +219,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_PREFIX_HEADER = Classes/SPIDemo_Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = SPIDemo;
@@ -242,9 +229,6 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PREFIX_HEADER = Classes/SPIDemo_Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = SPIDemo;
@@ -255,18 +239,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C80A7313D14CF8003D17E4 /* debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = Code/SPIDemo_Prefix.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -274,17 +246,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C80A7413D14CF8003D17E4 /* release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = Code/SPIDemo_Prefix.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 			};
 			name = Release;
 		};
