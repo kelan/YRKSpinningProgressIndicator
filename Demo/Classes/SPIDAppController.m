@@ -10,11 +10,11 @@
 
 
 @interface SPIDAppController () <NSApplicationDelegate>
+@property (nonatomic) IBOutlet NSWindow *window;
 @property (nonatomic) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic) IBOutlet YRKSpinningProgressIndicator *turboFan;
 @property (nonatomic) IBOutlet NSButton *nspiToggleButton;
 @property (nonatomic) IBOutlet NSButton *yrkpiToggleButton;
-@property (nonatomic) IBOutlet NSButton *threadedAnimationButton;
 @property (nonatomic) IBOutlet NSButton *displayWhenStoppedButton;
 @property (nonatomic) IBOutlet NSColorWell *foregroundColorWell;
 @property (nonatomic) IBOutlet NSColorWell *backgroundColorWell;
@@ -38,8 +38,6 @@
     [self changeBackgroundColor:_backgroundColorWell];
 
     _turboFan.drawsBackground = NO;
-    
-    [self takeThreadedFrom:_threadedAnimationButton];
 }
 
 
@@ -79,26 +77,24 @@
     
     _turboFan.indeterminate = NO;
     _turboFan.currentValue = 0.0;
-    
-    [NSThread detachNewThreadSelector:@selector(runDeterminateDemoInBackgroundThread) toTarget:self withObject:nil];
-}
+    _turboFan.maxValue = 100.0;
 
-- (void)runDeterminateDemoInBackgroundThread
-{
-    @autoreleasepool {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for (CGFloat value = 0.0; value <= 100.0; value += 0.5) {
             usleep(20000);
-            _turboFan.currentValue = value;
-        }
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_turboFan setIndeterminate:YES];
-        if (_yrkpiIsRunning) {
-            [_turboFan startAnimation:self];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _turboFan.currentValue = value;
+            });
         }
 
-        [_determinateDemoButton setEnabled:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_turboFan setIndeterminate:YES];
+            if (_yrkpiIsRunning) {
+                [_turboFan startAnimation:self];
+            }
+
+            [_determinateDemoButton setEnabled:YES];
+        });
     });
 }
 
@@ -124,11 +120,14 @@
     _turboFan.displayedWhenStopped = ([sender state] == NSOnState);
 }
 
-- (IBAction)takeThreadedFrom:(NSButton *)sender
+- (IBAction)blockThread:(id)sender
 {
-    BOOL useThreaded = [sender intValue];
-    _turboFan.usesThreadedAnimation = useThreaded;
-    _progressIndicator.usesThreadedAnimation = useThreaded;
+    // do a few noticably long operations on the main thread
+    for (NSUInteger i = 0; i < 5; i++) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            usleep(100000);
+        });
+    }
 }
 
 @end

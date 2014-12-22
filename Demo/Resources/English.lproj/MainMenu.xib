@@ -45,7 +45,7 @@
 			<object class="NSWindowTemplate" id="388692818">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{145, 763}, {389, 156}}</string>
+				<string key="NSWindowRect">{{145, 763}, {389, 171}}</string>
 				<int key="NSWTFlags">1881669632</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -61,7 +61,7 @@
 						<object class="NSCustomView" id="344089773">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">274</int>
-							<string key="NSFrame">{{131, 86}, {32, 32}}</string>
+							<string key="NSFrame">{{131, 101}, {32, 32}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="368665886"/>
@@ -71,10 +71,10 @@
 						<object class="NSButton" id="651528481">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{112, 30}, {70, 32}}</string>
+							<string key="NSFrame">{{112, 45}, {70, 32}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="356054591"/>
+							<reference key="NSNextKeyView" ref="520069301"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="344956800">
 								<int key="NSCellFlags">67108864</int>
@@ -101,7 +101,7 @@
 						<object class="NSButton" id="601836782">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{14, 30}, {86, 32}}</string>
+							<string key="NSFrame">{{14, 45}, {86, 32}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="651528481"/>
@@ -127,7 +127,7 @@
 						<object class="NSProgressIndicator" id="445711097">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">1324</int>
-							<string key="NSFrame">{{40, 86}, {32, 32}}</string>
+							<string key="NSFrame">{{40, 101}, {32, 32}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="344089773"/>
@@ -142,7 +142,7 @@
 									<characters key="NS.bytes">NSColor pasteboard type</characters>
 								</object>
 							</set>
-							<string key="NSFrame">{{195, 122}, {52, 24}}</string>
+							<string key="NSFrame">{{195, 137}, {52, 24}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="757203189"/>
@@ -162,7 +162,7 @@
 									<characters key="NS.bytes">NSColor pasteboard type</characters>
 								</object>
 							</set>
-							<string key="NSFrame">{{195, 94}, {52, 24}}</string>
+							<string key="NSFrame">{{195, 109}, {52, 24}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="764794432"/>
@@ -177,7 +177,7 @@
 						<object class="NSTextField" id="757203189">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{252, 126}, {82, 17}}</string>
+							<string key="NSFrame">{{252, 141}, {82, 17}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="445711097"/>
@@ -213,10 +213,10 @@
 						<object class="NSButton" id="764794432">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{253, 97}, {101, 18}}</string>
+							<string key="NSFrame">{{253, 112}, {101, 18}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="989837400"/>
+							<reference key="NSNextKeyView" ref="356054591"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="838377644">
 								<int key="NSCellFlags">67108864</int>
@@ -239,9 +239,10 @@
 						<object class="NSButton" id="520069301">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{190, 12}, {159, 32}}</string>
+							<string key="NSFrame">{{190, 46}, {159, 32}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="134970708"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="995762679">
 								<int key="NSCellFlags">67108864</int>
@@ -261,34 +262,10 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
-						<object class="NSButton" id="989837400">
-							<reference key="NSNextResponder" ref="405375199"/>
-							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{193, 70}, {178, 18}}</string>
-							<reference key="NSSuperview" ref="405375199"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="601836782"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="903775223">
-								<int key="NSCellFlags">-2080374784</int>
-								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Use threaded animation</string>
-								<reference key="NSSupport" ref="350122673"/>
-								<reference key="NSControlView" ref="989837400"/>
-								<int key="NSButtonFlags">1211912448</int>
-								<int key="NSButtonFlags2">2</int>
-								<reference key="NSAlternateImage" ref="813200206"/>
-								<string key="NSAlternateContents"/>
-								<string key="NSKeyEquivalent"/>
-								<int key="NSPeriodicDelay">200</int>
-								<int key="NSPeriodicInterval">25</int>
-							</object>
-							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						</object>
 						<object class="NSBox" id="288199221">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">20</int>
-							<string key="NSFrame">{{100, 38}, {5, 106}}</string>
+							<string key="NSFrame">{{100, 53}, {5, 106}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="14892515"/>
@@ -322,10 +299,10 @@
 						<object class="NSButton" id="356054591">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{194, 48}, {177, 18}}</string>
+							<string key="NSFrame">{{194, 85}, {177, 18}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="520069301"/>
+							<reference key="NSNextKeyView" ref="601836782"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="760277395">
 								<int key="NSCellFlags">-2080374784</int>
@@ -346,7 +323,7 @@
 						<object class="NSTextField" id="64223203">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{10, 129}, {65, 17}}</string>
+							<string key="NSFrame">{{10, 144}, {65, 17}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="288199221"/>
@@ -366,7 +343,7 @@
 						<object class="NSTextField" id="14892515">
 							<reference key="NSNextResponder" ref="405375199"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{114, 129}, {47, 17}}</string>
+							<string key="NSFrame">{{114, 144}, {47, 17}}</string>
 							<reference key="NSSuperview" ref="405375199"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1051472683"/>
@@ -383,13 +360,39 @@
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 							<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 						</object>
+						<object class="NSButton" id="134970708">
+							<reference key="NSNextResponder" ref="405375199"/>
+							<int key="NSvFlags">265</int>
+							<string key="NSFrame">{{190, 13}, {159, 32}}</string>
+							<reference key="NSSuperview" ref="405375199"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSButtonCell" key="NSCell" id="120030171">
+								<int key="NSCellFlags">67108864</int>
+								<int key="NSCellFlags2">134217728</int>
+								<string key="NSContents">Block Main Thread</string>
+								<reference key="NSSupport" ref="350122673"/>
+								<reference key="NSControlView" ref="134970708"/>
+								<int key="NSButtonFlags">-2038284288</int>
+								<int key="NSButtonFlags2">1</int>
+								<reference key="NSAlternateImage" ref="350122673"/>
+								<string key="NSAlternateContents"/>
+								<object class="NSMutableString" key="NSKeyEquivalent">
+									<characters key="NS.bytes"/>
+								</object>
+								<int key="NSPeriodicDelay">200</int>
+								<int key="NSPeriodicInterval">25</int>
+							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+						</object>
 					</array>
-					<string key="NSFrameSize">{389, 156}</string>
+					<string key="NSFrameSize">{389, 171}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="64223203"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1680, 1027}}</string>
 				<string key="NSMinSize">{389, 196}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -1277,83 +1280,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">takeThreadedFrom:</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="989837400"/>
-					</object>
-					<int key="connectionID">258</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">startDeterminateDemo:</string>
 						<reference key="source" ref="846612265"/>
 						<reference key="destination" ref="520069301"/>
 					</object>
 					<int key="connectionID">263</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_progressIndicator</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="445711097"/>
-					</object>
-					<int key="connectionID">264</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_turboFan</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="344089773"/>
-					</object>
-					<int key="connectionID">265</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_nspiToggleButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="601836782"/>
-					</object>
-					<int key="connectionID">269</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_yrkpiToggleButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="651528481"/>
-					</object>
-					<int key="connectionID">270</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_threadedAnimationButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="989837400"/>
-					</object>
-					<int key="connectionID">271</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_foregroundColorWell</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="1051472683"/>
-					</object>
-					<int key="connectionID">272</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_backgroundColorWell</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="368665886"/>
-					</object>
-					<int key="connectionID">273</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_determinateDemoButton</string>
-						<reference key="source" ref="846612265"/>
-						<reference key="destination" ref="520069301"/>
-					</object>
-					<int key="connectionID">274</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1365,11 +1296,83 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">_displayWhenStoppedButton</string>
+						<string key="label">window</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="388692818"/>
+					</object>
+					<int key="connectionID">290</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">determinateDemoButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="520069301"/>
+					</object>
+					<int key="connectionID">291</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">displayWhenStoppedButton</string>
 						<reference key="source" ref="846612265"/>
 						<reference key="destination" ref="356054591"/>
 					</object>
-					<int key="connectionID">287</int>
+					<int key="connectionID">292</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nspiToggleButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="601836782"/>
+					</object>
+					<int key="connectionID">293</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">yrkpiToggleButton</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="651528481"/>
+					</object>
+					<int key="connectionID">294</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">foregroundColorWell</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="1051472683"/>
+					</object>
+					<int key="connectionID">295</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">progressIndicator</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="445711097"/>
+					</object>
+					<int key="connectionID">296</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">turboFan</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="344089773"/>
+					</object>
+					<int key="connectionID">297</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">backgroundColorWell</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="368665886"/>
+					</object>
+					<int key="connectionID">298</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">blockThread:</string>
+						<reference key="source" ref="846612265"/>
+						<reference key="destination" ref="134970708"/>
+					</object>
+					<int key="connectionID">302</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1422,9 +1425,9 @@
 							<reference ref="368665886"/>
 							<reference ref="757203189"/>
 							<reference ref="764794432"/>
-							<reference ref="989837400"/>
-							<reference ref="520069301"/>
 							<reference ref="356054591"/>
+							<reference ref="520069301"/>
+							<reference ref="134970708"/>
 						</array>
 						<reference key="parent" ref="388692818"/>
 					</object>
@@ -1934,19 +1937,6 @@
 						<reference key="parent" ref="520069301"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">254</int>
-						<reference key="object" ref="989837400"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="903775223"/>
-						</array>
-						<reference key="parent" ref="405375199"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">255</int>
-						<reference key="object" ref="903775223"/>
-						<reference key="parent" ref="989837400"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">257</int>
 						<reference key="object" ref="288199221"/>
 						<reference key="parent" ref="405375199"/>
@@ -1989,6 +1979,19 @@
 						<int key="objectID">285</int>
 						<reference key="object" ref="163558956"/>
 						<reference key="parent" ref="14892515"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">299</int>
+						<reference key="object" ref="134970708"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="120030171"/>
+						</array>
+						<reference key="parent" ref="405375199"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">300</int>
+						<reference key="object" ref="120030171"/>
+						<reference key="parent" ref="134970708"/>
 					</object>
 				</array>
 			</object>
@@ -2039,12 +2042,14 @@
 				<string key="191.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="196.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="197.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<reference key="2.IBNSViewMetadataGestureRecognizers" ref="0"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="204.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="206.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="207.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="208.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="209.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="21.IBPersistedLastKnownCanvasPosition">{-0.5, 2.5}</string>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="21.IBWindowTemplateEditedContentRect">{{465, 380}, {377, 161}}</string>
 				<boolean value="YES" key="21.NSWindowTemplate.visibleAtLaunch"/>
@@ -2061,8 +2066,6 @@
 				<string key="249.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="250.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="251.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="254.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="255.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="257.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="275.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="276.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2071,6 +2074,8 @@
 				<string key="284.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="285.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="299.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="300.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2092,47 +2097,54 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">289</int>
+			<int key="maxID">302</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SPIDAppController</string>
 					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../Classes/SPIDAppController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SPIDAppController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="changeBackgroundColor:">id</string>
-						<string key="changeForegroundColor:">id</string>
-						<string key="startDeterminateDemo:">id</string>
-						<string key="takeThreadedFrom:">id</string>
-						<string key="toggleDisplayWhenStopped:">id</string>
-						<string key="toggleDrawBackground:">id</string>
+						<string key="blockThread:">id</string>
+						<string key="changeBackgroundColor:">NSColorWell</string>
+						<string key="changeForegroundColor:">NSColorWell</string>
+						<string key="startDeterminateDemo:">NSButton</string>
+						<string key="toggleDisplayWhenStopped:">NSButton</string>
+						<string key="toggleDrawBackground:">NSButton</string>
 						<string key="toggleProgressIndicator:">id</string>
 						<string key="toggleTurboFan:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="blockThread:">
+							<string key="name">blockThread:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="changeBackgroundColor:">
 							<string key="name">changeBackgroundColor:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSColorWell</string>
 						</object>
 						<object class="IBActionInfo" key="changeForegroundColor:">
 							<string key="name">changeForegroundColor:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSColorWell</string>
 						</object>
 						<object class="IBActionInfo" key="startDeterminateDemo:">
 							<string key="name">startDeterminateDemo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="takeThreadedFrom:">
-							<string key="name">takeThreadedFrom:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBActionInfo" key="toggleDisplayWhenStopped:">
 							<string key="name">toggleDisplayWhenStopped:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBActionInfo" key="toggleDrawBackground:">
 							<string key="name">toggleDrawBackground:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBActionInfo" key="toggleProgressIndicator:">
 							<string key="name">toggleProgressIndicator:</string>
@@ -2144,103 +2156,52 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="_backgroundColorWell">NSColorWell</string>
-						<string key="_determinateDemoButton">NSButton</string>
-						<string key="_displayWhenStoppedButton">NSButton</string>
-						<string key="_foregroundColorWell">NSColorWell</string>
-						<string key="_nspiToggleButton">NSButton</string>
-						<string key="_progressIndicator">NSProgressIndicator</string>
-						<string key="_threadedAnimationButton">NSButton</string>
-						<string key="_turboFan">YRKSpinningProgressIndicator</string>
-						<string key="_yrkpiToggleButton">NSButton</string>
+						<string key="backgroundColorWell">NSColorWell</string>
+						<string key="determinateDemoButton">NSButton</string>
+						<string key="displayWhenStoppedButton">NSButton</string>
+						<string key="foregroundColorWell">NSColorWell</string>
+						<string key="nspiToggleButton">NSButton</string>
+						<string key="progressIndicator">NSProgressIndicator</string>
+						<string key="turboFan">YRKSpinningProgressIndicator</string>
+						<string key="window">NSWindow</string>
+						<string key="yrkpiToggleButton">NSButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="_backgroundColorWell">
-							<string key="name">_backgroundColorWell</string>
+						<object class="IBToOneOutletInfo" key="backgroundColorWell">
+							<string key="name">backgroundColorWell</string>
 							<string key="candidateClassName">NSColorWell</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_determinateDemoButton">
-							<string key="name">_determinateDemoButton</string>
+						<object class="IBToOneOutletInfo" key="determinateDemoButton">
+							<string key="name">determinateDemoButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_displayWhenStoppedButton">
-							<string key="name">_displayWhenStoppedButton</string>
+						<object class="IBToOneOutletInfo" key="displayWhenStoppedButton">
+							<string key="name">displayWhenStoppedButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_foregroundColorWell">
-							<string key="name">_foregroundColorWell</string>
+						<object class="IBToOneOutletInfo" key="foregroundColorWell">
+							<string key="name">foregroundColorWell</string>
 							<string key="candidateClassName">NSColorWell</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_nspiToggleButton">
-							<string key="name">_nspiToggleButton</string>
+						<object class="IBToOneOutletInfo" key="nspiToggleButton">
+							<string key="name">nspiToggleButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_progressIndicator">
-							<string key="name">_progressIndicator</string>
+						<object class="IBToOneOutletInfo" key="progressIndicator">
+							<string key="name">progressIndicator</string>
 							<string key="candidateClassName">NSProgressIndicator</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_threadedAnimationButton">
-							<string key="name">_threadedAnimationButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="_turboFan">
-							<string key="name">_turboFan</string>
+						<object class="IBToOneOutletInfo" key="turboFan">
+							<string key="name">turboFan</string>
 							<string key="candidateClassName">YRKSpinningProgressIndicator</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_yrkpiToggleButton">
-							<string key="name">_yrkpiToggleButton</string>
+						<object class="IBToOneOutletInfo" key="window">
+							<string key="name">window</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="yrkpiToggleButton">
+							<string key="name">yrkpiToggleButton</string>
 							<string key="candidateClassName">NSButton</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Classes/SPIDAppController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SPIDAppController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="changeBackgroundColor:">id</string>
-						<string key="changeForegroundColor:">id</string>
-						<string key="startDeterminateDemo:">id</string>
-						<string key="takeThreadedFrom:">id</string>
-						<string key="toggleDisplayWhenStopped:">id</string>
-						<string key="toggleDrawBackground:">id</string>
-						<string key="toggleProgressIndicator:">id</string>
-						<string key="toggleTurboFan:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="changeBackgroundColor:">
-							<string key="name">changeBackgroundColor:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="changeForegroundColor:">
-							<string key="name">changeForegroundColor:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="startDeterminateDemo:">
-							<string key="name">startDeterminateDemo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="takeThreadedFrom:">
-							<string key="name">takeThreadedFrom:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDisplayWhenStopped:">
-							<string key="name">toggleDisplayWhenStopped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDrawBackground:">
-							<string key="name">toggleDrawBackground:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleProgressIndicator:">
-							<string key="name">toggleProgressIndicator:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleTurboFan:">
-							<string key="name">toggleTurboFan:</string>
-							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

@@ -14,7 +14,6 @@
 @property (nonatomic, assign) BOOL drawsBackground;
 
 @property (nonatomic, assign, getter=isDisplayedWhenStopped) BOOL displayedWhenStopped;
-@property (nonatomic, assign) BOOL usesThreadedAnimation;
 
 @property (nonatomic, assign, getter=isIndeterminate) BOOL indeterminate;
 @property (nonatomic, assign) CGFloat currentValue;

@@ -10,21 +10,28 @@
 const CGFloat kAlphaWhenStopped = 0.15;
 const CGFloat kFadeMultiplier = 0.85l;
 const NSUInteger kNumberOfFins = 12;
-const NSTimeInterval kFadeOutTime = 0.7;  // seconds
+const NSTimeInterval kFadeOutTime = 0.5;  // seconds
+
+
+// Helper functions
+static NSTimeInterval timeIntervalFromCVTimeStamp(const CVTimeStamp *timestamp);
+
 
 @interface YRKSpinningProgressIndicator ()
 @end
 
 
 @implementation YRKSpinningProgressIndicator {
-    int _currentPosition;
-    NSMutableArray *_finColors;
-
+    NSUInteger _currentPosition;
+    NSArray *_finColors;
     BOOL _isAnimating;
-    NSTimer *_animationTimer;
-    NSThread *_animationThread;
+
+    CVDisplayLinkRef _displayLink;
+    NSTimeInterval _animationStartTime;
+
+    NSTimeInterval _fadeOutStartTime;
+    CGFloat _fadeAmount;  // 1.0 = no fade, 0.0 = full fade
     BOOL _isFadingOut;
-    NSDate *_fadeOutStartTime;
 }
 
 #pragma mark - Init
@@ -34,7 +41,7 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
     self = [super initWithFrame:frame];
     if (self) {
         _currentPosition = 0;
-        _finColors = [[NSMutableArray alloc] initWithCapacity:kNumberOfFins];
+        _finColors = @[];
 
         _isAnimating = NO;
         _isFadingOut = NO;
@@ -45,8 +52,7 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
         _drawsBackground = NO;
         
         _displayedWhenStopped = YES;
-        _usesThreadedAnimation = YES;
-        
+
         _indeterminate = YES;
         _currentValue = 0.0;
         _maxValue = 100.0;
@@ -99,7 +105,11 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
 
         // Draw all the fins by rotating the CTM, then just redraw the same path again.
         for (NSUInteger i = 0; i < kNumberOfFins; i++) {
-            NSColor *c = _isAnimating ? _finColors[i] : [_color colorWithAlphaComponent:kAlphaWhenStopped];
+            NSColor *c = _isAnimating ? _finColors[(i + _currentPosition) % kNumberOfFins] : [_color colorWithAlphaComponent:kAlphaWhenStopped];
+            if (_isFadingOut) {
+                const CGFloat minAlpha = _displayedWhenStopped ? kAlphaWhenStopped : 0.0;
+                c = [c colorWithAlphaComponent:MAX(c.alphaComponent * _fadeAmount, minAlpha)];
+            }
             [c set];
             [path stroke];
 
@@ -125,6 +135,10 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
     }
 }
 
+- (BOOL)isOpaque
+{
+    return _drawsBackground;
+}
 
 #pragma mark - NSProgressIndicator API
 
@@ -139,17 +153,9 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
 
 - (void)stopAnimation:(id)sender
 {
-    // animate to stopped state
+    // Don't stop immediately; continue animation to fade out to stopped state.
     _isFadingOut = YES;
-    _fadeOutStartTime = [NSDate date];
-}
-
-/// Only the spinning style is implemented
-- (void)setStyle:(NSProgressIndicatorStyle)style
-{
-    if (NSProgressIndicatorSpinningStyle != style) {
-        NSAssert(NO, @"Non-spinning styles not available.");
-    }
+    _fadeOutStartTime = -1;  // signal to set it on next displayLink callback
 }
 
 
@@ -159,13 +165,26 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
 {
     if (_color != value) {
         _color = [value copy];
-        
-        // Set all the fin colors, with their current alpha components.
-        for (NSUInteger i = 0; i < kNumberOfFins; i++) {
-            CGFloat alpha = [self alphaValueForPosition:i];
-            _finColors[i] = [_color colorWithAlphaComponent:alpha];
+
+        NSTimeInterval elapsedTime = 0.0;
+        // elapsedTime is only needed when fading out
+        if (_isFadingOut) {
+            CVTimeStamp now;
+            if (CVDisplayLinkGetCurrentTime(_displayLink, &now) == kCVReturnSuccess) {
+                elapsedTime = timeIntervalFromCVTimeStamp(&now);
+            }
+            else {
+                NSLog(@"error getting current time");
+            }
         }
-        
+        // Set all the fin colors, with decreasing alpha.
+        NSMutableArray *mutableColors = [NSMutableArray arrayWithCapacity:kNumberOfFins];
+        for (NSUInteger i = 0; i < kNumberOfFins; i++) {
+            CGFloat alphaValue = pow(kFadeMultiplier, i);
+            mutableColors[i] = [_color colorWithAlphaComponent:alphaValue];
+        }
+        _finColors = mutableColors;
+
         [self setNeedsDisplay:YES];
     }
 }
@@ -211,19 +230,6 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
     [self setNeedsDisplay:YES];
 }
 
-- (void)setUsesThreadedAnimation:(BOOL)useThreaded
-{
-    if (_usesThreadedAnimation != useThreaded) {
-        _usesThreadedAnimation = useThreaded;
-        
-        if (_isAnimating) {
-            // restart the timer to use the new mode
-            [self stopAnimation:self];
-            [self startAnimation:self];
-        }
-    }
-}
-
 - (void)setDisplayedWhenStopped:(BOOL)displayedWhenStopped
 {
     _displayedWhenStopped = displayedWhenStopped;
@@ -237,52 +243,10 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
 
 #pragma mark - Private
 
-- (void)updateFrameFromTimer:(NSTimer *)timer
-{
-    // update the colors
-    const CGFloat minAlpha = _displayedWhenStopped ? kAlphaWhenStopped : 0.0;
-    for (NSUInteger i = 0; i < kNumberOfFins; i++) {
-        CGFloat newAlpha = MAX([self alphaValueForPosition:i], minAlpha);
-        _finColors[i] = [_color colorWithAlphaComponent:newAlpha];
-    }
-    
-    if (_isFadingOut) {
-        // check if the fadeout is done
-        if ([_fadeOutStartTime timeIntervalSinceNow] < -kFadeOutTime) {
-            [self actuallyStopAnimation];
-        }
-    }
-
-    if (_usesThreadedAnimation) {
-        // draw now instead of waiting for setNeedsDisplay (that's the whole reason
-        // we're animating from background thread)
-        [self display];
-    }
-    else {
-        [self setNeedsDisplay:YES];
-    }
-
-    // update the currentPosition for next time, unless fading out
-    if (!_isFadingOut) {
-        _currentPosition = (_currentPosition + 1) % kNumberOfFins;
-    }
-}
-
-/// Returns the alpha value for the given position.
-/// Each fin should fade exponentially over _numberOfFins frames of animation.
-/// @param position is [0,kNumberOfFins)
-- (CGFloat)alphaValueForPosition:(NSUInteger)position
-{
-    CGFloat normalValue = pow(kFadeMultiplier, (position + _currentPosition) % kNumberOfFins);
-    if (_isFadingOut) {
-        NSTimeInterval timeSinceStop = -[_fadeOutStartTime timeIntervalSinceNow];
-        normalValue *= kFadeOutTime - timeSinceStop;
-    }
-    return normalValue;
-}
-
 - (void)actuallyStartAnimation
 {
+    NSAssert([NSThread isMainThread], @"must be called on main thread");
+
     // Just to be safe kill any existing timer.
     [self actuallyStopAnimation];
     
@@ -295,72 +259,119 @@ const NSTimeInterval kFadeOutTime = 0.7;  // seconds
     if (!_displayedWhenStopped) {
         [self setHidden:NO];
     }
-    
-    if ([self window]) {
-        // Why animate if not visible? viewDidMoveToWindow will re-call this method when needed.
-        if (_usesThreadedAnimation) {
-            _animationThread = [[NSThread alloc] initWithTarget:self selector:@selector(animateInBackgroundThread) object:nil];
-            [_animationThread start];
+
+    // Don't animate if not visible. viewDidMoveToWindow will re-call this method when needed.
+    if (self.window) {
+        CGDirectDisplayID displayID = CGMainDisplayID();
+        CVDisplayLinkCreateWithActiveCGDisplays(&_displayLink);
+        CVDisplayLinkSetCurrentCGDisplay(_displayLink, ((CGDirectDisplayID)[[[NSScreen mainScreen].deviceDescription objectForKey:@"NSScreenNumber"]intValue]));
+        CVReturn error = CVDisplayLinkCreateWithCGDisplay(displayID, &_displayLink);
+        if (error != kCVReturnSuccess) {
+            NSLog(@"CVDisplayLinkCreateWithCGDisplay() returned error=%d", error);
+            _displayLink = NULL;
         }
         else {
-            _animationTimer = [NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
-                                                      target:self
-                                                    selector:@selector(updateFrameFromTimer:)
-                                                    userInfo:nil
-                                                     repeats:YES];
-            
-            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSRunLoopCommonModes];
-            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
-            [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSEventTrackingRunLoopMode];
+            CVDisplayLinkSetOutputCallback(_displayLink,
+                                           displayLinkCallback,
+                                           (__bridge void *)self);
+            CVDisplayLinkStart(_displayLink);
+            _animationStartTime = -1;  // signal to set it on next displayLink callback
         }
     }
 }
 
+
+/// A C function that serves as the CVDisplayLink callback, but just calls to the Spinner to do the actual work.
+CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
+                             const CVTimeStamp *now,
+                             const CVTimeStamp *outputTime,
+                             CVOptionFlags flagsIn,
+                             CVOptionFlags *flagsOut,
+                             void *displayLinkContext)
+{
+    YRKSpinningProgressIndicator *spinner = (__bridge YRKSpinningProgressIndicator *)displayLinkContext;
+    return spinner ? [spinner updateStateAndDrawForOutputTime:outputTime] : kCVReturnError;
+}
+
+/// This updates the state, and then draws (from a background thread).
+/// The state info used by -drawRect: is _currentPosition and _fadeAmount.
+- (CVReturn)updateStateAndDrawForOutputTime:(const CVTimeStamp *)outputTime
+{
+    if (!(outputTime->flags & kCVTimeStampVideoTimeValid)) {
+        NSLog(@"videoTime not valid");
+        return kCVReturnError;
+    }
+
+    NSTimeInterval now = timeIntervalFromCVTimeStamp(outputTime);
+
+    // Check if we need to set the start times
+    if (_animationStartTime < 0.0) {
+        _animationStartTime = now;
+    }
+    if (_fadeOutStartTime < 0.0) {
+        _fadeOutStartTime = now;
+    }
+
+    NSTimeInterval elapsedTime = now - _animationStartTime;
+
+    if (!_isFadingOut) {
+        // deterime new currentPosition
+        const CGFloat rpm = 100.0;
+        const NSTimeInterval desiredSecsPerFinIncrement = (NSTimeInterval)60 / rpm / kNumberOfFins;
+
+        NSUInteger newPosition = (NSUInteger)floorf((elapsedTime / desiredSecsPerFinIncrement)) % kNumberOfFins;
+        if (_currentPosition != newPosition) {
+            _currentPosition = newPosition;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // use -display instead of -setNeedsDisplay:YES, otherwise it seems to get blocked
+                // by certain run loop moodes (for example, resizing the window in the demo app.
+                [self display];
+            });
+        }
+    }
+    else {
+        // During fade-out, don't change _currentPosition, but do update _fadeAmount
+        NSTimeInterval timeSinceStop = now - _fadeOutStartTime;
+        _fadeAmount = kFadeOutTime - timeSinceStop;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self display];
+
+            // check if the fadeout is  done
+            if (timeSinceStop > kFadeOutTime) {
+                [self actuallyStopAnimation];
+            }
+        });
+    }
+
+    return kCVReturnSuccess;
+}
+
 - (void)actuallyStopAnimation
 {
+    NSAssert([NSThread isMainThread], @"must be called on main thread");
+
     _isAnimating = NO;
     _isFadingOut = NO;
     
     if (!_displayedWhenStopped) {
         [self setHidden:YES];
     }
-    
-    if (_animationThread) {
-        // we were using threaded animation
-        [_animationThread cancel];
-        if (![_animationThread isFinished]) {
-            [[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
-        }
-        _animationThread = nil;
-    }
-    else if (_animationTimer) {
-        // we were using timer-based animation
-        [_animationTimer invalidate];
-        _animationTimer = nil;
-    }
+
+    // clean up the displayLink
+    CVDisplayLinkStop(_displayLink);
+    CVDisplayLinkRelease(_displayLink);
+    _displayLink = nil;
+
     [self setNeedsDisplay:YES];
 }
 
-- (void)animateInBackgroundThread
-{
-    @autoreleasepool {
-        // Set up the animation speed to subtly change with size > 32.
-        // int animationDelay = 38000 + (2000 * ([self bounds].size.height / 32));
-        
-        // Set the rev per minute here
-        int omega = 100; // RPM
-        int animationDelay = 60*1000000/omega/kNumberOfFins;
-        int poolFlushCounter = 0;
-        
-        do {
-            [self updateFrameFromTimer:nil];
-            usleep(animationDelay);
-            poolFlushCounter++;
-            if (poolFlushCounter > 256) {
-                poolFlushCounter = 0;
-            }
-        } while (![[NSThread currentThread] isCancelled]);
-    }
-}
-
 @end
+
+
+#pragma mark - Helper functions
+
+static NSTimeInterval timeIntervalFromCVTimeStamp(const CVTimeStamp *timestamp)
+{
+    return ((NSTimeInterval)timestamp->videoTime) / timestamp->videoTimeScale;
+}
